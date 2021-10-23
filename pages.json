@@ -61,6 +61,12 @@
 						// "navigationStyle": "custom" ,// 隐藏系统导航栏
 						// "navigationBarTextStyle": "white" // 状态栏字体为白色
 					}
+				},
+				{
+					"path":"image/image",
+					"style":{
+						"navigationBarTitleText": "Test"
+					}
 				}
 				// gap-间隔槽
 			]
