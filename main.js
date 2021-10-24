@@ -23,6 +23,7 @@ Vue.mixin(vuexStore);
 let mpShare = require('uview-ui/libs/mixin/mpShare.js');
 Vue.mixin(mpShare);
 
+
 // i18n部分的配置
 // 引入语言包，注意路径
 import Chinese from '@/common/locales/zh.js';

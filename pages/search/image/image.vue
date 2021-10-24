@@ -33,6 +33,8 @@
 </style>
 
 <script>
+	import "../../../components/reaee-image-clip/reaee-image-clip" 
+	
 	export default {
 		data() {
 			return {
@@ -45,6 +47,7 @@
 				}
 			}
 		},
+
 		computed: {
 		        imageStyle() {
 		            return {
