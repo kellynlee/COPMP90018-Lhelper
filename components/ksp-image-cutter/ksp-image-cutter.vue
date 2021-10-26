@@ -31,6 +31,7 @@
 </template>
 
 <script>
+	import "@/uview-ui/components/u-button/u-button"
 export default {
 	props: {
 		url: {

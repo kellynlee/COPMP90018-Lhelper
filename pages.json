@@ -69,7 +69,16 @@
 					}
 				}
 				// gap-间隔槽
-			]
+			    ,{
+                    "path" : "voice/voice",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 		},
 		{
 			"root": "pages/todolist",

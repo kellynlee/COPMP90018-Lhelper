@@ -1,12 +1,12 @@
 <template>
 	<view class="u-demo">
 		
-		<view class="image-start">
-				
-				<button class="image-selection" @tap="chooseImage()">Select Image</button>
+		<view>
 				<div class="bor" :style="imageStyle">
 					<image v-if="path" :style="imageStyle" :src="path"></image>
 				</div>
+				<button class="image-selection" @tap="chooseImage()">Select Image</button>
+				
 		        
 				<kps-image-cutter @ok="onok" @cancel="oncancle" :blob=false :url="url" :fixed="false" :maxWidth="500" :minHeight="300"></kps-image-cutter>
 		</view>
@@ -37,7 +37,8 @@
 	},
 	.bor{
 		border:1rpx dashed #78827f;
-		margin:20rpx;
+		margin-left:20rpx;
+		margin-right:20rpx;
 		}
 </style>
 
