@@ -5,6 +5,7 @@
 			:lunar="false" 
 			:start-date="'2001-1-1'"
 			:end-date="'2030-12-31'"
+			:reddayList='reddays'
 			@change="CalendarSelectCallback"
 	     />
 		<view>
@@ -31,9 +32,10 @@
 </template>
 
 <script>
-	import { LoadTodolist, AddNewTodo, UpdateTodo, DeleteTodo, DoneTodo } from "./db.js"
+	import { LoadTodolist, AddNewTodo, UpdateTodo, DeleteTodo, DoneTodo, LoadAllTodolist } from "./db.js"
 	var dburl = 'https://l-helper-default-rtdb.asia-southeast1.firebasedatabase.app/todolist/'
 	var username = 'LaLa' // TODO
+	
 	export default {
 		data() {
 			return {
@@ -44,17 +46,18 @@
 						  { text: 'Edit', style: { backgroundColor: '#007aff' }}],
 				showEditField: false,
 				addOrEdit: false,
-				curEditIndex: 0
+				curEditIndex: 0,
+				reddays: {}
 			}
+		},
+		created() {
+			this.updateRedDot()
 		},
 		methods: {
 			CalendarSelectCallback(e) {
 				this.today = e.fulldate
 				this.updateList()
-				/*
-				UpdateTodo('user1', this.today, 'lala', 2, (res) => {
-				})
-				*/
+
 			},
 			updateList() {
 				LoadTodolist(username, this.today, (res) => {
@@ -100,10 +103,13 @@
 						done: false
 					})
 					var text = this.todoText
+					var today = this.today
 					this.todoText = ''
 					this.showEditField = false
-					AddNewTodo(username, this.today, {text:text, done:false}, (res) => {
+					AddNewTodo(username, today, {text:text, done:false}, (res) => {
 						this.updateList()
+						
+						this.reddays = Object.assign({}, this.reddays, {[today]: true})
 					})
 				} else {
 					// UI mock edit
@@ -129,6 +135,7 @@
 					
 					DeleteTodo(username, this.today, index, (res) => {
 						this.updateList()
+						this.updateRedDot()
 					})
 				} else if(index1 == 1) {
 					// edit
@@ -142,6 +149,7 @@
 				if(e.name >= this.list.length) return
 				DoneTodo(username, this.today, e.name, e.value, (res) => {
 					this.updateList()
+					this.updateRedDot()
 				})
 			},
 			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
@@ -152,7 +160,36 @@
 				this.list.map((val, idx) => {
 					if(index != idx) this.list[idx].show = false;
 				})
-			}
+			},
+			updateRedDot() {
+				LoadAllTodolist(username, (res) => {
+					if(res == null || res.data == null) { return }
+					for(var day in res.data) {
+						var list = res.data[day]
+						var ifShowRed = false
+						for (var i = 0; i <list.length; i++) {
+							var todoItem = list[i]
+							if (todoItem.done == false) {
+								ifShowRed = true
+							}
+						}
+						if(ifShowRed) {
+							if(this.reddays[day] == null || this.reddays[day] == false) {
+								this.reddays = Object.assign({}, this.reddays, {[day]: true})
+							}
+						} else {
+							if(this.reddays[day] != null && this.reddays[day] == true) {
+								this.reddays = Object.assign({}, this.reddays, {[day]: false})
+							}
+						}
+					}
+					for(var day in this.reddays) {
+						if(res.data[day] == null) {
+							this.reddays = Object.assign({}, this.reddays, {[day]: false})
+						}
+					}
+				})
+			},
 		}
 	}
 </script>

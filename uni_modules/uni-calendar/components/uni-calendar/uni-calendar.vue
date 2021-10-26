@@ -1,5 +1,5 @@
 <template>
-	<view class="uni-calendar">
+	<view class="uni-calendar" :reddayList='reddayList'>
 		<view v-if="!insert&&show" class="uni-calendar__mask" :class="{'uni-calendar--mask-show':aniMaskShow}" @click="clean"></view>
 		<view v-if="insert || show" class="uni-calendar__content" :class="{'uni-calendar--fixed':!insert,'uni-calendar--ani-show':aniMaskShow}">
 			<view v-if="!insert" class="uni-calendar__header uni-calendar--fixed-top">
@@ -131,6 +131,12 @@
 			clearDate: {
 				type: Boolean,
 				default: true
+			},
+			reddayList: {
+				type: Object,
+				default () {
+					return {}
+				}
 			}
 		},
 		data() {
@@ -139,7 +145,8 @@
 				weeks: [],
 				calendar: {},
 				nowDate: '',
-				aniMaskShow: false
+				aniMaskShow: false,
+				reddays: {}
 			}
 		},
 		computed:{
@@ -183,6 +190,10 @@
 				// this.cale.setDate(newVal)
 				this.init(newVal)
 			},
+			reddayList(val) {
+				this.refreshRedDot()
+				this.reddays = val
+			},
 			startDate(val){
 				this.cale.resetSatrtDate(val)
 				this.cale.setDate(this.nowDate.fullDate)
@@ -194,7 +205,6 @@
 				this.weeks = this.cale.weeks
 			},
 			selected(newVal) {
-				console.log("jcc select", newVal)
 				this.cale.setSelectInfo(this.nowDate.fullDate, newVal)
 				this.weeks = this.cale.weeks
 			}
@@ -208,6 +218,7 @@
 				endDate: this.endDate,
 				range: this.range,
 			})
+			
 			// 选中某一天
 			// this.cale.setDate(this.date)
 			this.init(this.date)
@@ -219,8 +230,29 @@
 			clean() {},
 			bindDateChange(e) {
 				const value = e.detail.value + '-1'
-				console.log(this.cale.getDate(value));
 				this.init(value)
+			},
+			refreshRedDot() {
+				for (var i = 0; i < 6; i++) {
+					var week = this.cale.weeks[i]
+					if(week == null) continue
+					for(var j = 0; j < 7; j++) {
+						var day = week[j]
+						if(day == null) continue
+						if(day.fullDate == null) continue
+						
+						var pre = this.cale.weeks[i][j].extraInfo
+						var now = this.reddayList[day.fullDate]
+						if(pre != now) {
+							if(now == true) {
+								this.cale.weeks[i][j] = Object.assign({}, this.cale.weeks[i][j], {extraInfo: true})
+							} else {
+								this.cale.weeks[i][j] = Object.assign({}, this.cale.weeks[i][j], {extraInfo: null})
+							}
+						}
+					}
+				}
+				this.weeks = this.cale.weeks
 			},
 			/**
 			 * 初始化日期显示
@@ -229,7 +261,10 @@
 			init(date) {
 				this.cale.setDate(date)
 				this.weeks = this.cale.weeks
+				
 				this.nowDate = this.calendar = this.cale.getInfo(date)
+				
+				this.refreshRedDot()
 			},
 			/**
 			 * 打开日历弹窗
@@ -326,11 +361,11 @@
 			 * 回到今天
 			 */
 			backtoday() {
-				console.log(this.cale.getDate(new Date()).fullDate);
 				let date = this.cale.getDate(new Date()).fullDate
 				// this.cale.setDate(date)
 				this.init(date)
 				this.change()
+				this.refreshRedDot()
 			},
 			/**
 			 * 上个月
@@ -339,7 +374,7 @@
 				const preDate = this.cale.getDate(this.nowDate.fullDate, -1, 'month').fullDate
 				this.setDate(preDate)
 				this.monthSwitch()
-
+				this.refreshRedDot()
 			},
 			/**
 			 * 下个月
@@ -348,6 +383,7 @@
 				const nextDate = this.cale.getDate(this.nowDate.fullDate, +1, 'month').fullDate
 				this.setDate(nextDate)
 				this.monthSwitch()
+				this.refreshRedDot()
 			},
 			/**
 			 * 设置日期

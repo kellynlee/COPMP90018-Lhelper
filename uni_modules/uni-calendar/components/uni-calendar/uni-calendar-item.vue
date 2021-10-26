@@ -9,7 +9,7 @@
 		}"
 	 @click="choiceDate(weeks)">
 		<view class="uni-calendar-item__weeks-box-item">
-			<text v-if="selected&&weeks.extraInfo" class="uni-calendar-item__weeks-box-circle"></text>
+			<text v-if="weeks.extraInfo" class="uni-calendar-item__weeks-box-circle"></text>
 			<text class="uni-calendar-item__weeks-box-text" :class="{
 				'uni-calendar-item--isDay-text': weeks.isDay,
 				'uni-calendar-item--isDay':calendar.fullDate === weeks.fullDate && weeks.isDay,
@@ -19,7 +19,7 @@
 				'uni-calendar-item--after-checked':weeks.afterMultiple,
 				'uni-calendar-item--disable':weeks.disable,
 				}">{{weeks.date}}</text>
-			<text v-if="!lunar&&!weeks.extraInfo && weeks.isDay" class="uni-calendar-item__weeks-lunar-text" :class="{
+			<text v-if="!lunar&& weeks.isDay" class="uni-calendar-item__weeks-lunar-text" :class="{
 				'uni-calendar-item--isDay-text':weeks.isDay,
 				'uni-calendar-item--isDay':calendar.fullDate === weeks.fullDate && weeks.isDay,
 				'uni-calendar-item--checked':calendar.fullDate === weeks.fullDate && !weeks.isDay,

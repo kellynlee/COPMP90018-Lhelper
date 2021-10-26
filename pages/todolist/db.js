@@ -85,6 +85,15 @@ const DeleteTodo = function(username, fulldate, index, cb) {
 	})
 }
 
+const LoadAllTodolist = function(username, cb) {
+	var getListUrl = dburl+username+'/.json'
+	uni.request({
+		url: getListUrl,
+		method: "GET", header: { 'content-type': 'application/json' },
+		success: cb
+	});
+}
+
 export {
-	LoadTodolist, AddNewTodo, UpdateTodo, DeleteTodo, DoneTodo
+	LoadTodolist, AddNewTodo, UpdateTodo, DeleteTodo, DoneTodo, LoadAllTodolist
 }
