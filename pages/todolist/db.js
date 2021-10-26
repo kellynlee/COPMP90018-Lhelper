@@ -13,7 +13,7 @@ const LoadTodolist = function(username, fulldate, cb) {
 const AddNewTodo = function(username, fulldate, todo, cb) {
 	console.log('Add new todo: ', username, todo)
 	var list = []
-	LoadTodoListOnDay(username, fulldate, (res) => {
+	LoadTodolist(username, fulldate, (res) => {
 		list = res.data
 		if(list == null) {
 			list = []
@@ -29,7 +29,6 @@ const AddNewTodo = function(username, fulldate, todo, cb) {
 }
 
 const UpdateTodo = function(username, fulldate, todo, index, cb) {
-	console.log('update todo: ', username, index, todo)
 	var list = []
 	LoadTodolist(username, fulldate, (res) => {
 		list = res.data
@@ -38,6 +37,25 @@ const UpdateTodo = function(username, fulldate, todo, index, cb) {
 		}
 		if(list.length > index) {
 			list[index] = todo
+			uni.request({
+				url: dburl+username+'/'+fulldate+'.json',
+				data: list,
+				method: "PUT", header: { 'content-type': 'application/json' },
+				success: cb
+			});
+		}
+	})
+}
+
+const DoneTodo = function(username, fulldate, index, cb) {
+	var list = []
+	LoadTodolist(username, fulldate, (res) => {
+		list = res.data
+		if(list == null) {
+			list = []
+		}
+		if(list.length > index) {
+			list[index].done = true
 			uni.request({
 				url: dburl+username+'/'+fulldate+'.json',
 				data: list,
@@ -69,5 +87,5 @@ const DeleteTodo = function(username, fulldate, index, cb) {
 }
 
 export {
-	LoadTodolist, AddNewTodo, UpdateTodo, DeleteTodo
+	LoadTodolist, AddNewTodo, UpdateTodo, DeleteTodo, DoneTodo
 }
