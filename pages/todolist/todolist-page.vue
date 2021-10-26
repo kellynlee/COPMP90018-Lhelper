@@ -14,11 +14,18 @@
 </template>
 
 <script>
+	import {
+		LoadTodolist,
+		AddNewTodo,
+		UpdateTodo,
+		DeleteTodo
+	} from "./db.js"
 	var dburl = 'https://l-helper-default-rtdb.asia-southeast1.firebasedatabase.app/todolist/'
+	
 	export default {
 		data() {
 			return {
-				today: "1",
+				today: null,
 				showkeyboard: false,
 			}
 		},
@@ -27,58 +34,22 @@
 				this.today = e.fulldate
 				console.log('calender click on fulldate', e.fulldate)
 				
-				//this.LoadTodoListOnDay(this.today)
-				
-				this.AddNewUserData('user2')
-			},
-			LoadTodoListOnDay(fulldate) {
-				var username = 'user1'
-				var getListUrl = dburl+username+'/'+this.today+'.json'
-				uni.request({
-				    url: getListUrl,
-				    data: {
-				        requests: [
-							{
-								features:[{type:"TEXT_DETECTION"}]
-							}
-						]
-				    },
-					method: "GET", header: { 'content-type': 'application/json' },
-				    success: (res) => {
-						if(res.data == null) {
-							this.TryAddNewUserData(username)
-						}
-				        console.log(res)
-				    }
-				});
-			},
-			TryAddNewUserData(username) {
-				uni.request({
-				    url: dburl+username+'.json',
-				    method: "GET", header: { 'content-type': 'application/json' },
-				    success: (res) => {
-				        if(res.data == null) {
-							
-						}
-				    }
-				});
-			},
-			AddNewUserData(username) {
-				console.log('Add new user data: ', username)
-				var today = this.today
-				uni.request({
-				    url: dburl+username+'.json',
-				    data: {
-				        today:"b"
-				    },
-					method: "PUT", header: { 'content-type': 'application/json' },
-				    success: (res) => {
-						if(res.data == null) {
-							this.TryAddNewUserData(username)
-						}
-				        console.log(res)
-				    }
-				});
+				LoadTodolist('user1', this.today, (res) => {
+					console.log(res.data)
+				})
+				/*
+				AddNewTodo('user1', this.today, "haha", (res) => {
+					console.log(res.data)
+				})
+				*/
+				/*
+				UpdateTodo('user1', this.today, 'lala', 2, (res) => {
+				})
+				*/
+				/*
+				DeleteTodo('user1', this.today, 2, (res) => {
+				})
+				*/
 			}
 		}
 	}
