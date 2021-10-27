@@ -13,8 +13,8 @@
 				@click="delTodoButton" @open="open" :options="options">
 				<view class="item u-border-bottom">
 					<view class="list-item">
-						<text class="title u-line-2">{{ item.title }}</text>
-						<u-checkbox @change="doneButton" v-model="item.done" :name="item.id"></u-checkbox>
+						<text class="list-item-text">{{ item.title }}</text>
+						<u-checkbox class="list-item-done" @change="doneButton" v-model="item.done" :name="item.id"></u-checkbox>
 					</view>
 				</view>
 			</u-swipe-action>
@@ -199,6 +199,15 @@
 		display: flex;
 		padding: 20rpx;
 		flex-direction: row;
+		
+	}
+	.list-item-text {
+		order: 1;
+		
+	}
+	.list-item-done {
+		float:right;
+		
 	}
 	
 	.title {
