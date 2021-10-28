@@ -19,4 +19,8 @@
 
 <style lang="scss">
 	@import "uview-ui/index.scss";
+	@import "common/iconfont.css";
+	page{
+		background-color: #f5f5f6;
+	}
 </style>
