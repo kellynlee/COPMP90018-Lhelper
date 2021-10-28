@@ -1,17 +1,24 @@
 <template>
 	<view>
-		<u-button @click="openPage()">image</u-button>
-
+		<u-button @click="openPage(0)">image</u-button>
+		<u-button @click="openPage(1)">voice</u-button>
 	</view>
 </template>
 
 <script>
 	export default{
 		methods:{
-			openPage() {
-				this.$u.route({
-				 url: "/pages/search/image/image"
-				})
+			openPage(b) {
+				if (b==0){
+					this.$u.route({
+					 url: "/pages/search/image/image"
+					})
+				}else{
+					this.$u.route({
+					 url: "/pages/search/voice/voice"
+					})
+				}
+				
 			   }
 		   },
 	}

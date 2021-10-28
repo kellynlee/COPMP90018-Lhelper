@@ -1,48 +1,65 @@
 <template>
 	<view class="u-demo">
-		<view class="u-demo-wrap">
-			<view class="u-demo-title">Example</view>
-			<!-- <view class="u-demodemo-main-box"> -->
-			        <view :style="imageStyle" style="background-color: #fff;">
-			            <image :src="clipsrc" :style="imageStyle"></image>
-			        </view>
-					
-			        <button @click="select" v-if="!src">Image Selection</button>
-			        <!-- src 为选取的图片地址 v-if 是为了销毁组件 size是裁剪后输出图片的宽高 @cancel这个是为了配合销毁 rectScale 是裁剪选区的屏占比,会自动适配 -->
-			        <reaee-image-clip :src="src" v-if="src" @ok="ok" :size="size" @cancel="src = false" :rectScale="0.5">
-			            <!-- 以下三个按钮如果不设定,会有默认的文字展示 -->
-			            <!-- <button slot="ok">自定义确定</button> -->
-			            <!-- <button slot="rotate">自定义旋转</button> -->
-			            <!-- <button slot="cancel">自定义取消</button> -->
-			        </reaee-image-clip>
-			    <!-- </view> -->
+		
+		<view>
+				<div class="bor" :style="imageStyle">
+					<image v-if="path" :style="imageStyle" :src="path"></image>
+				</div>
+				<button class="image-selection" @tap="chooseImage()">Select Image</button>
+				
+		        
+				<kps-image-cutter @ok="onok" @cancel="oncancle" :blob=false :url="url" :fixed="false" :maxWidth="500" :minHeight="300"></kps-image-cutter>
 		</view>
-		<u-button class="custom-style" size="default">{{text}}</u-button>
-		<u-button class="custom-style" size="default">{{text}}</u-button>
-		<u-button class="custom-style" size="default">{{text}}</u-button>
-		<u-button :hair-line="false" class="custom-style">{{text}}</u-button>
+
+		</u-grid>
+		<view v-for="(item,index) in textLst" :key="index">
+			<u-button class="button" size="default">{{item}}</u-button>
+		</view>
+		
 
     </view>
 </template>
 
 <style scoped>
-	.custom-style {
+	.button {
 		margin-top: 20rpx;
 		width: 650rpx;
+	},
+	.image-start{
+		margin-top: 10rpx;
 	}
+	.image-selection{
+		margin:20rpx;
+		/* border: #000000; */
+	},
+	.image {
+		margin: 28rpx;
+	},
+	.bor{
+		border:1rpx dashed #78827f;
+		margin-left:20rpx;
+		margin-right:20rpx;
+		}
 </style>
 
 <script>
+	import kpsImageCutter from "@/components/ksp-image-cutter/ksp-image-cutter.vue";
+	
+	
 	export default {
+		components:{kpsImageCutter},
 		data() {
 			return {
+				textLst:["test1","test2"],
 				text: "test",
 				src:'',
 				clipsrc: '',
 				size: {
-					width: 625,
-					height: 100,
-				}
+					width: 700,
+					height: 200,
+				},
+				url: "",
+				path: "",
 			}
 		},
 		computed: {
@@ -53,17 +70,23 @@
 		            };
 		        }
 		    },
+			
 		methods: {
 
-			select() {
-			            uni.chooseImage({ count: 1 }).then(res => {
-			                this.src = res[1].tempFiles[0].path;
-			            });
-			        },
-			ok(e) {
-				this.src = '';
-				this.clipsrc = e;
-				var s = e.slice(22)
+			chooseImage() {
+			                uni.chooseImage({
+			                    success: (res) => {
+			                        // 设置url的值，显示控件
+			                        this.url = res.tempFilePaths[0];
+			                    }
+			                });
+			            },
+			onok(ev) {
+				this.path = ev.path;
+				console.log(ev.width, ev.height)
+				this.url = "";
+				this.size.height = Math.ceil(ev.height/ev.width * 700)
+				var s = this.path.slice(22)
 				uni.request({
 				    url: 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCB517fv6zesTMgtXx9mPjgeVccBuncSsE', //仅为示例，并非真实接口地址。
 				    data: {
@@ -81,20 +104,31 @@
 				        'content-type': 'application/json' 
 				    },
 				    success: (res) => {
-				        console.log(res.data["responses"][0]["fullTextAnnotation"]);
-				        this.text = res.data["responses"][0]["fullTextAnnotation"]["text"];
+				        // console.log(res.data["responses"][0]["fullTextAnnotation"]);
+				        var s = res.data["responses"][0]["fullTextAnnotation"]["text"];
+						var wordLst = s.toLocaleLowerCase().split(/[\@\#\$\%\^\&\*\(\)\{\}\:\"\<\>\?\[\]\n\s123456789]/);
+						this.textLst = [];
+						for (var i=0;i<wordLst.length;i++){
+							// var isletter = /^[a-zA-Z]+$/.test(wordLst[i]);
+							// console.log(wordLst[i]);
+							if (wordLst[i].length>1){
+								
+								this.textLst.push(wordLst[i])
+							}
+						};
+						
 				    }
 				});
+				// console.log(ev.path)
 			},
-			cancel() {
-				this.src = '';
+			oncancle() {
+				this.url = "";
 			},
+			
+		
 			
 		}
 	};
 
 </script>
 
-<style lang="scss" scoped>
-	.u-demo {}
-</style>
