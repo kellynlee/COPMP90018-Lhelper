@@ -443,7 +443,7 @@
 	}
 
 	.uni-calendar__content {
-		background-color: #fff;
+		// background-color: #fff;
 	}
 
 	.uni-calendar__header {
@@ -455,9 +455,10 @@
 		justify-content: center;
 		align-items: center;
 		height: 50px;
-		border-bottom-color: $uni-border-color;
-		border-bottom-style: solid;
-		border-bottom-width: 1px;
+		background-color: #c7e5c8;
+		// border-bottom-color: $uni-border-color;
+		// border-bottom-style: solid;
+		// border-bottom-width: 1px;
 	}
 
 	.uni-calendar--fixed-top {
@@ -488,7 +489,7 @@
 		border-top-left-radius: 25px;
 		border-bottom-left-radius: 25px;
 		color: $uni-text-color;
-		background-color: $uni-bg-color-hover;
+		background-color: #fbfffc;
 	}
 
 	.uni-calendar__header-text {
@@ -505,8 +506,12 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		width: 50px;
-		height: 50px;
+		width: 2rem;
+		height: 2rem;
+		background-color: #fbfffc;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+		border-radius: 2rem;
+		margin: 0 0.8rem;
 	}
 
 	.uni-calendar__header-btn {
@@ -561,6 +566,11 @@
 
 	.uni-calendar__box {
 		position: relative;
+		margin: 10px;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+		border-radius: 10px;
+		padding: 5px;
+		background-color: white;
 	}
 
 	.uni-calendar__box-bg {

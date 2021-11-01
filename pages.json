@@ -15,26 +15,33 @@
 		{
 			"path": "pages/search/search-page",
 			"style": {
-				"navigationBarTitleText": "search"
+				"navigationBarTitleText": "Search",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		{
 			"path": "pages/glossary/glossary-page",
 			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色
+				"navigationBarTitleText": "Glossary",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		{
 			"path": "pages/flashcard/flashcard-page",
 			"style": {
-				"navigationBarTitleText": "flash card"
+				"navigationBarTitleText": "Flash Card",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		{
 			"path": "pages/todolist/todolist-page",
 			"style": {
-				"navigationBarTitleText": "todo list"
+				"navigationBarTitleText": "Todo List",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		// fullScreen-压窗屏

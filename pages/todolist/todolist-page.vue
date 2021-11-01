@@ -10,23 +10,25 @@
 	     />
 		<view>
 			<u-swipe-action :show="item.show" :index="index"  v-for="(item, index) in list" :key="item.id" 
-				@click="delTodoButton" @open="open" :options="options">
-				<view class="item u-border-bottom">
-					<view class="list-item">
+				@click="delTodoButton" @open="open" :options="options" class="todo-list">
+					<view class="list-item" :class="item.done?'list-item-done':''" >
+						<u-checkbox @change="doneButton" v-model="item.done" :name="item.id"></u-checkbox>
 						<text class="list-item-text">{{ item.title }}</text>
-						<u-checkbox class="list-item-done" @change="doneButton" v-model="item.done" :name="item.id"></u-checkbox>
 					</view>
-				</view>
 			</u-swipe-action>
 		</view>
 		<view>
 			<u-popup v-model="showEditField" mode="bottom">
-				<u-input v-model="todoText" type='textarea' :border=true :height=200 />
+				<u-input v-model="todoText" type='textarea' :border="true" placeholder="Please input thing to create a Todo item" />
 				<u-button @click="addTodoButton">COMMIT</u-button>
 			</u-popup>
 		</view>
-		<view>
-			<u-button @click="inputButton">ADD</u-button>
+		<view class="add">
+			<view class="content">
+				<button @click="inputButton"class="btn uni-button" >
+					<u-icon name="plus"></u-icon>
+				</button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -42,8 +44,8 @@
 				today: null,
 				todoText: '',
 				list: [],
-				options: [{ text: 'Delete', style: { backgroundColor: '#dd524d' }},
-						  { text: 'Edit', style: { backgroundColor: '#007aff' }}],
+				options: [{ text: 'Delete', style: { backgroundColor: '#f06292' }},
+						  { text: 'Edit', style: { backgroundColor: '#90caf9' }}],
 				showEditField: false,
 				addOrEdit: false,
 				curEditIndex: 0,
@@ -194,26 +196,52 @@
 	}
 </script>
 
-<style>
-	.list-item {
-		display: flex;
-		padding: 20rpx;
-		flex-direction: row;
-		
-	}
-	.list-item-text {
-		order: 1;
-		
-	}
-	.list-item-done {
-		float:right;
-		
-	}
+<style  lang="scss" scoped>
 	
 	.title {
 		text-align: left;
 		font-size: 28rpx;
 		color: $u-content-color;
 		margin-top: 20rpx;
+	}
+	.add{
+		position: fixed;
+		bottom: 3.5rem;
+		width: 100vw;
+		display: flex;
+		justify-content: flex-end;
+		padding-right: 1rem;
+		.content{
+			.btn {
+				background-color: #c7e5c8;
+				color: white;
+				font-size: 1rem;
+				border-radius: 2rem;
+			}
+			.uni-button:after {
+				border: none;
+			}
+		}
+	}
+	.todo-list {
+		margin: 0.6rem;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+		border-radius: 0.5rem;
+		:first-child {
+			border-radius: 0.5rem;
+		}
+		
+		.list-item {
+			display: flex;
+			padding: 20rpx;
+			flex-direction: row;
+			height: 2.5rem;
+			align-items: center;
+		}
+		
+		.list-item-done {
+			opacity: .7;
+			background-color: #fafffb;
+		}
 	}
 </style>
