@@ -1,5 +1,6 @@
 <template>
 	<view class="main-body">
+		<button type="default" @click="test">image</button>
 		<view class="u-demo-wrap search-page-body" >
 			<view>
 				<view class="search-page-header animation" v-show="!onFocus" :animation="animationData">
@@ -40,6 +41,7 @@
 				</u-col>
 			</u-row>
 		</view>
+		
 
 	</view>
 
@@ -96,6 +98,11 @@
 				// 导出动画数据传递给data层
 				this.animationData = this.animation.export()
 
+			},
+			test() {
+				this.$u.route({
+				 url: "/pages/search/image/image"
+				})
 			}
 		},
 		data: () => {

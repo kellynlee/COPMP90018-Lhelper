@@ -1,37 +1,46 @@
 <template>
 	<view class="glossary-page">
-		<u-navbar :is-back="false" title="Glossary" :background="styles.navBackground" class="nav-bar" title-color="#000000"/>
+		<!-- <u-navbar :is-back="false" title="Glossary" :background="styles.navBackground" class="nav-bar" title-color="#000000"/> -->
 		<view class="list">
-			<view class="item-card" v-for="(item, index) in glossaryList"
-			:key="index">
-				<transition name="swipe">
-					<view class="item-content" :id="index" @touchstart="drawStart" @touchmove="drawMove" @touchend="drawEnd" :style="'right:'+item.right+'px'">
-						<u-row>
-							<u-col span="11"><p class="item-title">{{item.word}}</p></u-col>
-							<u-col span="1">
-								<u-icon v-if="item.star" name="heart-fill" color="#f06292"></u-icon>
-							</u-col>
-						</u-row>
-						<p>{{"ADD TIME:"+item.added_time}}</p>
-						<p>{{"HITS:"+getHits(item)}}</p>
-						<u-row gutter="2" class="collapse-card" justify="space-around">
-							<u-col span="4">
-								<button class="button uni-button" @click="onClickStar(item,index)">
-									<u-icon name="heart" custom-prefix="custom-icon" class="icon-btn"></u-icon>{{item.star? "Unstar":"Star"}}
+			<transition-group name="delete">
+				<view class="item-card" v-for="(item, index) in glossaryList"
+				:key="item.id">
+						<view class="item-content" 
+						:id="index" 
+						@touchstart="drawStart" 
+						@touchmove="drawMove" 
+						@touchend="drawEnd" 
+						:style="'right:'+item.right+'px'">
+							<u-row>
+								<u-col span="11"><p class="item-title">{{item.word}}</p></u-col>
+								<u-col span="1">
+									<u-icon v-if="item.star" name="heart-fill" color="#f06292"></u-icon>
+								</u-col>
+							</u-row>
+							<p>{{"ADD TIME:"+item.added_time}}</p>
+							<p>{{"HITS:"+getHits(item)}}</p>
+							<u-row gutter="2" class="collapse-card" justify="space-around">
+								<u-col span="4">
+									<button class="button uni-button" @click="onClickStar(item,index)">
+										<u-icon name="heart" custom-prefix="custom-icon" class="icon-btn"></u-icon>
+										{{item.star? "Unstar":"Star"}}
+										</button>
+								</u-col>
+								<u-col span="4">
+									<button class="button uni-button">
+										<u-icon name="pencil" custom-prefix="custom-icon" class="icon-btn"></u-icon>Review
 									</button>
-							</u-col>
-							<u-col span="4">
-								<button class="button uni-button">
-									<u-icon name="pencil" custom-prefix="custom-icon" class="icon-btn"></u-icon>Review
-								</button>
-							</u-col>
-						</u-row>
+								</u-col>
+							</u-row>
+						</view>
+					<view class="delete-item">
+						<button class="delete-btn uni-button" @click="onDelete(item,index)">
+							<u-icon name="close"></u-icon>
+							</button>
 					</view>
-				</transition>
-				<view class="delete-item">
-					<button class="delete-btn uni-button" @click="onDelete(item,index)"><u-icon name="close"></u-icon></button>
 				</view>
-			</view>
+			</transition-group>
+			
 		</view>
 	</view>
 </template>
@@ -105,11 +114,8 @@
 			onDelete(item,index){
 				let deleteIndex = GLOSSARY_URL+item.id;
 				axios.delete(getUrl(deleteIndex)).then((res) => {
-					if(res === null) {
-						axios.get(getUrl(GLOSSARY_URL)).then((res) => {
-							let obj = res.data
-							this.glossaryList = getArray(obj)
-						})
+					if(res.status === 200) {
+							this.glossaryList.splice(index,1)
 					}
 				})
 			},
@@ -230,10 +236,14 @@
 		background-color: #c7e5c8;
 	}
 	
-	.swipe-enter-active {
-	  transition: all .6s ease;
+	.delete-leave {
+		opacity: 1;
 	}
-	.swipe-enter-active {
-	  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	.delete-leave-to {
+		opacity: 0;
 	}
+  .delete-leave-active {
+		transition: opacity .5s;
+	}
+
 </style>
