@@ -1,202 +1,108 @@
 <template>
-	<view class="u-demo">
-		<u-card :title="data.words_list[number].word" title-size="60" margin="300rpx 180rpx 0rpx 180rpx">
-			<view class="" slot="body">
-				<view class="u-body-item u-flex u-row-between u-p-b-0">
-					<view class="u-body-item-title u-line-2">{{data.words_list[number].phonetic_symbol}}</view>	
-				</view>
-			</view>
-		</u-card>
-		<u-button @click="former()" class="custom-former" size="default">{{text1}}</u-button>
-		<u-button @click="next()" class="custom-next" size="default">{{text2}}</u-button>
-		<u-button style="forStyle" @click="forget()" class="custom-forget" size="default">{{text4}}</u-button>
-		<u-button style="remStyle" @click="remember()" class="custom-remember" size="default">{{text3}}</u-button>
-		<u-button class="custom-count" size="default">{{text0}}</u-button>
+	<view>
+		<view class="words-number"><h2>12/23</h2> </view>
+		<view class="flashcard-wrap">
+			<view class="side-arrow"><p><</p></view>
+			<cardSlide v-if="Show" ref="flashcard" :wordList='wordList' @OnReloadForget="reloadForget" @OnRemember='rememberEvent' @OnForget='forgetEvent' @error='errEvent'></cardSlide>
+			<view class="side-arrow"><p>></p></view>
+		</view>
+		<view class="button-group">
+			<u-button plain @click="forget" type="error" class="button-style">forget</u-button>
+			<u-button plain @click="remember" type="success"  class="button-style">remember</u-button>
+		</view>
 	</view>
 </template>
 
 <script>
+	import cardSlide from './vue-card-slide.vue'
 	export default {
-		data() {
+		components:{cardSlide},
+		data(){
 			return {
-				number: 0,
-				x: "primary",
-				rem_list: new Array(),
-				text1: "<",
-				text2: ">",
-				text3: "remember",
-				text4: "forget",
-				data: {
-    created_date: "1/20/2021",
-    word_count: 5,
-    words_list: [
-      {
-        id: "hfudy738",
-        phonetic_symbol: "/ˈfɔːmə/",
-        word: "Former1"
-      },
-      {
-        id: "hfudy738",
-        phonetic_symbol: "/ˈfɔːmə/",
-        word: "Former2"
-      },
-      {
-        id: "hfudy738",
-        phonetic_symbol: "/ˈfɔːmə/",
-        word: "Former3"
-      },
-      {
-        id: "hfudy738",
-        phonetic_symbol: "/ˈfɔːmə/",
-        word: "Former4"
-      },
-      {
-        id: "hfudy738",
-        phonetic_symbol: "/ˈfɔːmə/",
-        word: "Former5"
-      }
-    ]
-  }
-
+				Show:true,
+				wordList:[
+					{word:"test1"},
+					{word:"test2"},
+					{word:"test3"},
+					{word:"test4"},
+					{word:"test5"},
+					{word:"test6"},
+					{word:"test7"},
+					{word:"test8"},
+					{word:"test9"},
+					// {word:"test10"},
+					// {word:"test11"},
+					// {word:"test12"},
+					// {word:"test13"},
+					// {word:"test14"},
+					// {word:"test15"},
+					// {word:"test16"},
+					// {word:"test17"},
+					// {word:"test18"},
+					// {word:"test19"},
+					// {word:"test20"},
+				],
+				forgetWords:[]
 			}
 		},
-		computed: {
-		    text0: function () {
-				return (this.number+1)+"/"+this.data.word_count
-		    },
-			forStyle() {
-				if (this.rem_list[this.number]==1)
-				{
-					return {
-						type:"primary"
-					};
-				}
-				else
-				{
-					return{
-						type:"default"
-					};
-				}
-			},
-			remStyle() {
-				if (this.rem_list[this.number]==2)
-				{
-					return {
-						type:"primary"
-					};
-				}
-				else
-				{
-					return{
-						type:"default"
-					};
-				}
-			}
-		},
-		onLoad() {
-				 //this.loadwordlist();
-		   },
 		methods:{
-			loadwordlist () {
-				var getListUrl = 'https://l-helper-default-rtdb.asia-southeast1.firebasedatabase.app/DailyWords.json'
-				uni.request({
-					url: getListUrl,
-					method: "GET", 
-					header: { 'content-type': 'application/json' },
-					data:{},
-					success: (res) => {
-						this.data =res.data;
-						console.log(this.data);
-					}
-				});
+			forget:function(){
+				this.$refs.flashcard.success();
 			},
-			former() {
-				if (this.number==0)
-				{this.number=this.data.word_count-1;}
-				else {this.number--;}
+			remember:function(){
+				this.$refs.flashcard.error();
 			},
-			next() {
-				if (this.number==(this.data.word_count-1))
-				{this.number=0;}
-				else {this.number++;}
+			rememberEvent:function(word){
+				// console.log(word)
 			},
-			forget() {
-				this.rem_list[this.number]=1;
-				var flag=true;
-				for (var i=0; i<this.data.word_count;i++)
-				{
-					if ((this.rem_list[i]!=1)&&(this.rem_list[i]!=2))
-					{
-						flag=false;
-						break;
-					}
-				}
-				if (flag)
-				{
-					this.$u.route({	url: "/pages/flashcard/report"})
-				}
+			forgetEvent:function(word){
+				this.forgetWords.push(word)
+				console.log(word)
 			},
-			remember() {
-				this.rem_list[this.number]=2;
-				var flag=true;
-				for (var i=0; i<this.data.word_count;i++)
-				{
-					if ((this.rem_list[i]!=1)&&(this.rem_list[i]!=2))
-					{
-						flag=false;
-						break;
-					}
-				}
-				if (flag)
-				{
-					this.$u.route({	url: "/pages/flashcard/report"})
-				}
+			async reloadForget(){
+				this.wordList = this.forgetWords;
+				this.forgetWords = []
+				this.Show= false
+				// 建议加上 nextTick 微任务 
+				// 否则在同一事件内同时将tableShow设置false和true有可能导致组件渲染失败
+				await this.$nextTick(function(){
+					// 加载
+					this.Show= true
+				})
 			}
-		},
+			
+		}
+		
 	};
 </script>
 
 <style scoped>
-	.custom-count {
-		margin-top: -650rpx;
-		width: 100rpx;
-		height: 50rpx;
-		margin-right: 330rpx;
-	}
-</style>
-
-<style scoped>
-	.custom-former {
-		margin-top: -150rpx;
-		width: 80rpx;
-		height: 80rpx;
-		margin-right: 620rpx;
-	}
-</style>
-
-<style scoped>
-	.custom-next {
-		margin-top: -80rpx;
-		width: 80rpx;
-		height: 80rpx;
-		margin-right: 50rpx;
-	}
-</style>
-
-<style scoped>
-	.custom-forget {
-		margin-top: 300rpx;
-		width: 300rpx;
-		height: 80rpx;
-		margin-right: 50rpx;
-	}
-</style>
-
-<style scoped>
-	.custom-remember {
-		margin-top: -80rpx;
-		width: 300rpx;
-		height: 80rpx;
-		margin-right: 400rpx;
-	}
+.flashcard-wrap{
+	margin-top: 40px;
+	display: flex;
+	align-content: center;
+	flex-direction: row;
+	justify-content: space-evenly;
+	
+}
+.side-arrow{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-content: center;
+	justify-content: center;
+}
+.button-group{
+	margin-top: 100px;
+	display: flex;
+	flex-direction: row;
+	justify-content:space-around;
+}
+.button-style{
+	width: 200rpx;
+}
+.words-number{
+	margin-top: 30px;
+	text-align: center;
+}
 </style>
