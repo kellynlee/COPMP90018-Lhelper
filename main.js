@@ -61,5 +61,12 @@ Vue.use(httpInterceptor, app);
 // http接口API抽离，免于写url或者一些固定的参数
 import httpApi from '@/common/http.api.js';
 Vue.use(httpApi, app);
+// ES6 import
+import VueTouch from 'vue-touch'
+Vue.use(VueTouch, {name: 'v-touch'})
+// import cardSlide from 'vue-card-slide'
+// // require import
+// // var cardSlide = require('CardSlide')
 
+// Vue.use(cardSlide)
 app.$mount();

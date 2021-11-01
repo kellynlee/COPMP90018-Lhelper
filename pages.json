@@ -15,25 +15,33 @@
 		{
 			"path": "pages/search/search-page",
 			"style": {
-				"navigationBarTitleText": "search"
+				"navigationBarTitleText": "Search",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		{
 			"path": "pages/glossary/glossary-page",
 			"style": {
-				"navigationBarTitleText": "glossary"
+				"navigationBarTitleText": "Glossary",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		{
 			"path": "pages/flashcard/flashcard-page",
 			"style": {
-				"navigationBarTitleText": "flash card"
+				"navigationBarTitleText": "Flash Card",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		{
 			"path": "pages/todolist/todolist-page",
 			"style": {
-				"navigationBarTitleText": "todo list"
+				"navigationBarTitleText": "Todo List",
+				"navigationBarBackgroundColor":"#c7e5c8",
+				"navigationBarTextStyle":"black"
 			}
 		},
 		// fullScreen-压窗屏
@@ -103,10 +111,8 @@
 		}
 	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uView",
-		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#FFFFFF"
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "uView"
 	},
 	"tabBar": {
 		"color": "#909399",
@@ -115,25 +121,25 @@
 		"borderStyle": "black",
 		"list": [{
 				"pagePath": "pages/search/search-page",
-				"iconPath": "static/uview/example/js.png",
-				"selectedIconPath": "static/uview/example/js_select.png",
+				"iconPath": "static/icons/icon-magnifying_glass.svg",
+				"selectedIconPath": "static/icons/icon-magnifying_glass-s.svg",
 				"text": "Search"
 			}, {
 				"pagePath": "pages/glossary/glossary-page",
-				"iconPath": "static/uview/example/component.png",
-				"selectedIconPath": "static/uview/example/component_select.png",
+				"iconPath": "static/icons/icon-book.svg",
+				"selectedIconPath": "static/icons/icon-book-s.svg",
 				"text": "Glossary"
 			},
 			{
 				"pagePath": "pages/flashcard/flashcard-page",
-				"iconPath": "static/uview/example/template.png",
-				"selectedIconPath": "static/uview/example/template_select.png",
+				"iconPath": "static/icons/icon-paper.svg",
+				"selectedIconPath": "static/icons/icon-paper-s.svg",
 				"text": "Flash Card"
 			},
 			{
 				"pagePath": "pages/todolist/todolist-page",
-				"iconPath": "static/uview/example/template.png",
-				"selectedIconPath": "static/uview/example/template_select.png",
+				"iconPath": "static/icons/icon-note.svg",
+				"selectedIconPath": "static/icons/icon-note-s.svg",
 				"text": "Todo List"
 			}
 		]
