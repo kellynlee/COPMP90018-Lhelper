@@ -48,16 +48,18 @@
 <script>
 	import {GLOSSARY_URL} from "../../utils/paths.js";
 	import {getUrl, getArray} from "../../utils/methods.js"
+	import {getGlossary} from "./glossary-service.js"
 	const axios = require("axios");
 	export default{
 		mounted() {
-			axios.get(getUrl(GLOSSARY_URL)).then((res) => {
-				let obj = res.data
-				this.glossaryList = getArray(obj)
-			})
+			this.userId = this.$store.state.vuex_user.id;
+			getGlossary(this.userId).then((res) => {
+				this.glossaryList = Object.assign({},res);
+			});
 		},
 		data() {
 			return {
+				userId:"",
 				glossaryList:[],
 				styles:{
 					navBackground:{

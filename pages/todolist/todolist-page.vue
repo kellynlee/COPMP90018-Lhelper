@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="todo-list-page">
 		<uni-calendar 
 			:insert="true"
 			:lunar="false" 
@@ -24,11 +24,9 @@
 			</u-popup>
 		</view>
 		<view class="add">
-			<view class="content">
-				<button @click="inputButton"class="btn uni-button" >
-					<u-icon name="plus"></u-icon>
-				</button>
-			</view>
+			<button @click="inputButton"class="btn uni-button" >
+				<u-icon name="plus"></u-icon>
+			</button>
 		</view>
 	</view>
 </template>
@@ -36,7 +34,6 @@
 <script>
 	import { LoadTodolist, AddNewTodo, UpdateTodo, DeleteTodo, DoneTodo, LoadAllTodolist } from "./db.js"
 	var dburl = 'https://l-helper-default-rtdb.asia-southeast1.firebasedatabase.app/todolist/'
-	var username = 'LaLa' // TODO
 	
 	export default {
 		data() {
@@ -49,12 +46,15 @@
 				showEditField: false,
 				addOrEdit: false,
 				curEditIndex: 0,
-				reddays: {}
+				reddays: {},
+				user:""
 			}
 		},
 		created() {
+			this.user = this.$store.state.vuex_user.id;
 			this.updateRedDot()
 		},
+		
 		methods: {
 			CalendarSelectCallback(e) {
 				this.today = e.fulldate
@@ -62,7 +62,7 @@
 
 			},
 			updateList() {
-				LoadTodolist(username, this.today, (res) => {
+				LoadTodolist(this.user, this.today, (res) => {
 					if(res.data == null){ this.list = []; return }
 					// check if update the ui data
 					var ifupdate = true
@@ -108,7 +108,7 @@
 					var today = this.today
 					this.todoText = ''
 					this.showEditField = false
-					AddNewTodo(username, today, {text:text, done:false}, (res) => {
+					AddNewTodo(this.user, today, {text:text, done:false}, (res) => {
 						this.updateList()
 						
 						this.reddays = Object.assign({}, this.reddays, {[today]: true})
@@ -120,7 +120,7 @@
 					var text = this.todoText
 					this.todoText = ''
 					this.showEditField = false
-					UpdateTodo(username, this.today, text, this.curEditIndex, (res) => {
+					UpdateTodo(this.user, this.today, text, this.curEditIndex, (res) => {
 						this.updateList()
 					})
 				}
@@ -135,7 +135,7 @@
 					// UI mock del
 					this.list.splice(index, 1);
 					
-					DeleteTodo(username, this.today, index, (res) => {
+					DeleteTodo(this.user, this.today, index, (res) => {
 						this.updateList()
 						this.updateRedDot()
 					})
@@ -149,7 +149,7 @@
 			},
 			doneButton(e) {
 				if(e.name >= this.list.length) return
-				DoneTodo(username, this.today, e.name, e.value, (res) => {
+				DoneTodo(this.user, this.today, e.name, e.value, (res) => {
 					this.updateList()
 					this.updateRedDot()
 				})
@@ -164,7 +164,7 @@
 				})
 			},
 			updateRedDot() {
-				LoadAllTodolist(username, (res) => {
+				LoadAllTodolist(this.user, (res) => {
 					if(res == null || res.data == null) { return }
 					for(var day in res.data) {
 						var list = res.data[day]
@@ -197,7 +197,9 @@
 </script>
 
 <style  lang="scss" scoped>
-	
+	.todo-list-page {
+		margin-bottom: 4.5rem;
+	}
 	.title {
 		text-align: left;
 		font-size: 28rpx;
@@ -207,20 +209,16 @@
 	.add{
 		position: fixed;
 		bottom: 3.5rem;
-		width: 100vw;
-		display: flex;
-		justify-content: flex-end;
 		padding-right: 1rem;
-		.content{
-			.btn {
-				background-color: #c7e5c8;
-				color: white;
-				font-size: 1rem;
-				border-radius: 2rem;
-			}
-			.uni-button:after {
-				border: none;
-			}
+		right: 0;
+		.btn {
+			background-color: #c7e5c8;
+			color: white;
+			font-size: 1rem;
+			border-radius: 2rem;
+		}
+		.uni-button:after {
+			border: none;
 		}
 	}
 	.todo-list {
