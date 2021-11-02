@@ -14,6 +14,7 @@
 					<view class="list-item" :class="item.done?'list-item-done':''" >
 						<u-checkbox @change="doneButton" v-model="item.done" :name="item.id"></u-checkbox>
 						<text class="list-item-text">{{ item.title }}</text>
+						<button v-show="item.isCard" @click="goFlashCardButton">GO</button>
 					</view>
 			</u-swipe-action>
 		</view>
@@ -24,7 +25,7 @@
 			</u-popup>
 		</view>
 		<view class="add">
-			<button @click="inputButton"class="btn uni-button" >
+			<button @click="inputButton" class="btn uni-button" >
 				<u-icon name="plus"></u-icon>
 			</button>
 		</view>
@@ -51,25 +52,41 @@
 			}
 		},
 		created() {
+			// unique user id
 			this.user = this.$store.state.vuex_user.id;
+			// update the red dot recommendation on calender
 			this.updateRedDot()
 		},
 		
 		methods: {
+			// call back when user select one day on calender
 			CalendarSelectCallback(e) {
 				this.today = e.fulldate
 				this.updateList()
 
 			},
+			// update the list data on ui
 			updateList() {
 				LoadTodolist(this.user, this.today, (res) => {
 					if(res.data == null){ this.list = []; return }
+					var rankdata = []
+					// rank the list
+					for (var i = 0; i < res.data.length; i++) {
+						if (res.data[i].type == "flashcard") {
+							rankdata.push(res.data[i])
+						}
+					}
+					for (var i = 0; i < res.data.length; i++) {
+						if (res.data[i].type != "flashcard") {
+							rankdata.push(res.data[i])
+						}
+					}
 					// check if update the ui data
 					var ifupdate = true
-					if(this.list.length == res.data.length) {
+					if(this.list.length == rankdata.length) {
 						var allSame = true
-						for (var i = 0; i < res.data.length; i++) {
-							var todoItem = res.data[i]
+						for (var i = 0; i < rankdata.length; i++) {
+							var todoItem = rankdata[i]
 							if(todoItem.text != this.list[i].title) {
 								allSame = false
 								break
@@ -82,18 +99,25 @@
 					if(ifupdate) {
 						this.list = []
 						// update list
-						for (var i = 0; i < res.data.length; i++) {
-							var todoItem = res.data[i]
+						for (var i = 0; i < rankdata.length; i++) {
+							var todoItem = rankdata[i]
 							this.list.push( {
 								id: i,
 								title: todoItem.text,
 								show: false,
-								done: todoItem.done
+								done: todoItem.done,
+								isCard: todoItem.type == "flashcard"
 							})
 						}
 					}
 				})
 			},
+			//
+			goFlashCardButton() {
+				// TODO
+				this.today
+			},
+			// add a new todo button call back
 			addTodoButton() {
 				if(this.todoText.length == 0) return
 				if(this.addOrEdit == false) {
@@ -125,10 +149,12 @@
 					})
 				}
 			},
+			// edit the todo content
 			inputButton() {
 				this.addOrEdit = false
 				this.showEditField = true
 			},
+			// delete the selected todo
 			delTodoButton(index, index1) {
 				if(index >= this.list.length) return
 				if(index1 == 0) {
@@ -147,6 +173,7 @@
 					this.showEditField = true
 				}
 			},
+			// mark the todo to done
 			doneButton(e) {
 				if(e.name >= this.list.length) return
 				DoneTodo(this.user, this.today, e.name, e.value, (res) => {
@@ -154,7 +181,7 @@
 					this.updateRedDot()
 				})
 			},
-			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
+			// close the other list item when swap a new one 
 			open(index) {
 				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
 				// 原本为'false'，再次设置为'false'会无效
@@ -163,6 +190,7 @@
 					if(index != idx) this.list[idx].show = false;
 				})
 			},
+			// check if the day has todos undone.
 			updateRedDot() {
 				LoadAllTodolist(this.user, (res) => {
 					if(res == null || res.data == null) { return }
