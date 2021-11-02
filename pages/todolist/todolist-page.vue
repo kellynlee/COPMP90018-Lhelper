@@ -114,11 +114,11 @@
 			},
 			//
 			gotoFlashCardButton() {
-				var path = "/pages/flashcard/flashcard-page/"
-				this.$u.route({
+				var path = "/pages/flashcard/flashcard-page"
+				uni.switchTab({
 				    url: path,
 					props: { date: this.today }
-				})
+				});
 			},
 			// add a new todo button call back
 			addTodoButton() {
