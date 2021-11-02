@@ -14,7 +14,7 @@
 					<view class="list-item" :class="item.done?'list-item-done':''" >
 						<u-checkbox @change="doneButton" v-model="item.done" :name="item.id"></u-checkbox>
 						<text class="list-item-text">{{ item.title }}</text>
-						<button v-show="item.isCard" @click="goFlashCardButton">GO</button>
+						<button v-show="item.isCard" @click="gotoFlashCardButton">GO</button>
 					</view>
 			</u-swipe-action>
 		</view>
@@ -113,9 +113,12 @@
 				})
 			},
 			//
-			goFlashCardButton() {
-				// TODO
-				this.today
+			gotoFlashCardButton() {
+				var path = "/pages/flashcard/flashcard-page/"
+				this.$u.route({
+				    url: path,
+					props: { date: this.today }
+				})
 			},
 			// add a new todo button call back
 			addTodoButton() {
