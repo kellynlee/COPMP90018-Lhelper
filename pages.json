@@ -17,7 +17,28 @@
 			"style": {
 				"navigationBarTitleText": "Search",
 				"navigationBarBackgroundColor":"#c7e5c8",
-				"navigationBarTextStyle":"black"
+				"navigationBarTextStyle":"black",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/icons/topbar-icon.ttf",
+							"text": "\ue687",
+							"width": "40px",
+							"fontSize": "28px",
+							"color": "#000000",
+							"background": "rgba(0,0,0,0)"
+						},
+						{
+							"fontSrc": "/static/icons/topbar-icon.ttf",
+							"text": "\ue686",
+							"width": "40px",
+							"fontSize": "28px",
+							"color": "#000000",
+							"background": "rgba(0,0,0,0)"
+						}
+						]
+					}
+				}
 			}
 		},
 		{
@@ -44,9 +65,22 @@
 				"navigationBarTextStyle":"black"
 			}
 		},
-		// fullScreen-压窗屏
+		// login page
 		{
-			"path": "uview-ui/components/u-full-screen/u-full-screen",
+			"path": "pages/user/login",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"animationType": "fade-in",
+					"background": "transparent",
+					"backgroundColor": "rgba(0,0,0,0)",
+					"popGesture": "none"
+				}
+			}
+		},
+		// register page
+		{
+			"path": "pages/user/register",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -65,9 +99,20 @@
 				{
 					"path": "search-page",
 					"style": {
-						"navigationBarTitleText": "Test"
+						"navigationBarTitleText": "Test",
 						// "navigationStyle": "custom" ,// 隐藏系统导航栏
 						// "navigationBarTextStyle": "white" // 状态栏字体为白色
+						"app-plus": {
+							"titleNView": {
+								"buttons": [{
+										"type": "share"
+									},
+									{
+										"type": "favorite"
+									}
+								]
+							}
+						}
 					}
 				},
 				{
@@ -80,10 +125,10 @@
 			    ,{
                     "path" : "voice/voice",
                     "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
                 
                 }
             ]
