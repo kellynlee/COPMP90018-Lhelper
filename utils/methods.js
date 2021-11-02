@@ -19,7 +19,32 @@ const getArray = function(obj){
 	});
 	return array;
 }
+/**
+ * Create daily flashcard
+ */
+import {FLASHCARD_URL} from "./paths.js"
+const axios = require("axios");
+const createFlashCard = async function(username,date,wordList) {
+	 const url = getUrl(FLASHCARD_URL+"/"+username+"/"+date)
+	 // const url = getUrl(FLASHCARD_URL+"/"+date);
+	 const data = {
+		 "created_date":date,
+		 "word_count":wordList.length,
+		 "word_list":wordList
+	 }
+	 const res = await axios.post(url,data)
+	 return res;
+ }
+ const checkUpdate = async function(username,date) {
+ 	let url = FLASHCARD_URL+"/"+username+"/"+date
+ 	let res = await axios.get(getUrl(url))
+ 	if (res.status === 200 && res.data) {
+ 		return true;
+ 	} else {
+ 		return false;
+ 	}
+ }
 
 export {
-	getUrl, getArray
+	getUrl, getArray, createFlashCard, checkUpdate
 }
