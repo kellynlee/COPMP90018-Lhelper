@@ -7,11 +7,12 @@
 				<button class="image-selection uni-button" @tap="chooseImage()">{{btnText}}</button>
 				
 		</view>
+		<u-loading :show="!isLoad"></u-loading>
 		<transition name="fade">
 			<view class="selection-area" v-if="textLst.length>0">
 				<text>Please select the word to see the dictionary</text>
 				<view v-for="(item,index) in textLst" :key="index" class="select-item">
-					<u-button class="button uni-button" >{{item}}</u-button>
+					<u-button class="button uni-button" @click="goDictionary(item)" >{{item}}</u-button>
 				</view>
 			</view>
 		</transition>
@@ -90,6 +91,7 @@
 					width: 600,
 					height: 300,
 				},
+				isLoad:true,
 				url: "",
 				path: "",
 			}
@@ -105,6 +107,11 @@
 			
 		methods: {
 
+			goDictionary(item) {
+				uni.navigateTo({
+				    url: '/pages/search/search-translate?word='+item
+				});
+			},
 			chooseImage() {
 			                uni.chooseImage({
 			                    success: (res) => {
@@ -128,6 +135,7 @@
 						}
 					var s = this.path.slice(22)
 					// console.log(s);
+					this.isLoad = false;
 					uni.request({
 					    url: 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCB517fv6zesTMgtXx9mPjgeVccBuncSsE', //仅为示例，并非真实接口地址。
 					    data: {
@@ -146,6 +154,7 @@
 					    },
 						timeout:10000,
 					    success: (res) => {
+									this.isLoad = true
 					        console.log(res);
 					        var s = res.data["responses"][0]["fullTextAnnotation"]["text"];
 							var wordLst = s.toLocaleLowerCase().split(/[\@\#\$\%\^\&\*\(\)\{\}\:\"\<\>\?\[\]\n\s123456789]/);
