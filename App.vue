@@ -20,13 +20,14 @@
 		},
 		methods:{
 			async createFlashcard(user) {
-				const times = [2,5,8,15,30,60]
+				const times = [1,2,5,8,15,30,60]
 				const now = new Date().getTime();
 				const today = dateFormat(now, "yyyy-mm-dd");
 				const isUpdated = await checkUpdate(user, today);
-				console.log(isUpdated)
-				if (!isUpdated) {
-					const res = await getGlossary(user);
+				const res = await getGlossary(user);
+				console.log(res)
+				if (!isUpdated && res) {
+					console.log("create flashcard")
 					const glossary = Object.assign([], res);
 					let count = 0;
 					let word_list = [];
