@@ -1,7 +1,7 @@
 <template>
-	<view>
+	<view class="voice-page">
 		<sound-recording></sound-recording>
-		<view>
+		<view class="search-area">
 				<u-field
 					v-model="word"
 					label="Word:"
@@ -49,6 +49,15 @@
 	}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.voice-page {
+	margin: 1rem;
+	background-color: white;
+	border-radius: 1rem;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+	  rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+	.selection-area {
+		
+	}
+}
 </style>
