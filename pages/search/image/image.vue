@@ -1,45 +1,76 @@
 <template>
-	<view class="u-demo">
-		
-		<view>
-				<div class="bor" :style="imageStyle">
+	<view class="photo-page">
+		<view class="photo-area">
+				<view class="bor" :style="imageStyle">
 					<image v-if="path" :style="imageStyle" :src="path"></image>
-				</div>
-				<button class="image-selection" @tap="chooseImage()">Select Image</button>
+				</view>
+				<button class="image-selection uni-button" @tap="chooseImage()">{{btnText}}</button>
 				
-		        
-				<kps-image-cutter @ok="onok" @cancel="oncancle" :blob=false :url="url" :fixed="false" :maxWidth="500" :minHeight="300"></kps-image-cutter>
 		</view>
-
-		</u-grid>
-		<view v-for="(item,index) in textLst" :key="index">
-			<u-button class="button" size="default">{{item}}</u-button>
-		</view>
-		
-
-    </view>
+		<transition name="fade">
+			<view class="selection-area" v-if="textLst.length>0">
+				<text>Please select the word to see the dictionary</text>
+				<view v-for="(item,index) in textLst" :key="index" class="select-item">
+					<u-button class="button uni-button" >{{item}}</u-button>
+				</view>
+			</view>
+		</transition>
+		<kps-image-cutter @ok="onok" @cancel="oncancle" :blob=false :url="url" :fixed="false" :maxWidth="500" :minHeight="300"></kps-image-cutter>
+  </view>
 </template>
 
-<style scoped>
-	.button {
-		margin-top: 20rpx;
-		width: 650rpx;
-	},
-	.image-start{
-		margin-top: 10rpx;
+<style lang="scss" scoped>
+	.photo-page {
+		background-color: white;
+		margin: 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+		border-radius: 1rem;
+		.photo-area {
+			display: flex;
+			flex-direction: column;
+			margin: 1rem 0;
+			.bor{
+				border:1rpx dashed #78827f;
+				}
+			.image-selection{
+				margin-top: 1rem;
+				background-color: #90caf9;
+				color: white;
+			}
+			.uni-button:after {
+			  border: none;
+			}
+		}
+		.selection-area {
+			margin: 0 1rem 1rem 1rem;
+			display: flex;
+			flex-direction: column;
+			.select-item {
+				margin: 0.5rem 0;
+				.button {
+					background-color: #c8e6c9;
+					color: white;
+				}
+				.uni-button:after {
+				  border: none;
+				}
+			}
+		}
 	}
-	.image-selection{
-		margin:20rpx;
-		/* border: #000000; */
-	},
+	.fade-enter-active, .fade-leave-active {
+	  transition: opacity .5s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	  opacity: 0;
+	}
+	
 	.image {
 		margin: 28rpx;
-	},
-	.bor{
-		border:1rpx dashed #78827f;
-		margin-left:20rpx;
-		margin-right:20rpx;
-		}
+	}
+	
 </style>
 
 <script>
@@ -50,13 +81,14 @@
 		components:{kpsImageCutter},
 		data() {
 			return {
-				textLst:["test1","test2"],
+				textLst:[],
 				text: "test",
 				src:'',
 				clipsrc: '',
+				btnText:"Take Photo",
 				size: {
-					width: 700,
-					height: 200,
+					width: 600,
+					height: 300,
 				},
 				url: "",
 				path: "",
@@ -77,6 +109,7 @@
 			                uni.chooseImage({
 			                    success: (res) => {
 			                        // 设置url的值，显示控件
+															this.btnText = "Retake"
 			                        this.url = res.tempFilePaths[0];
 			                    }
 			                });

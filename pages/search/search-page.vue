@@ -2,18 +2,33 @@
   <view class="main-body">
     <!-- <button type="default" @click="test">image</button> -->
     <view class="u-demo-wrap search-page-body">
-      <view>
         <view
           class="search-page-header animation"
           v-show="!onFocus"
           :animation="animationData"
         >
-          <view class="u-demo-title">Welcome to L-Helper</view>
+				<view class="logo">
+					<image
+					  mode="aspectFit"
+					  height="100px"
+						width="100px"
+					  src="../../static/icons/logo.svg"
+					/>
+				</view>
+          
+          <view class="title"
+            >Welcome to L-Helper, you can search a word by taking photo,
+            speaking and typing!
+          </view>
+					<u-row class="search">
+						<u-col span="6">
+							<button class="btn uni-button" @click="searchImage"><u-icon name="camera"></u-icon></button>
+						</u-col>
+						<u-col span="6">
+							<button class="btn uni-button" @click="searchVoice"><u-icon name="mic"></u-icon></button>
+						</u-col>
+					</u-row>
           <!-- <u-button @click="login">Login</u-button> -->
-          <image
-            mode="heightFix"
-            src="https://cdn.uviewui.com/uview/common/logo.png"
-          />
         </view>
         <view class="u-demo-area">
           <u-row>
@@ -23,7 +38,7 @@
                 @focus="getFocus"
                 @blur="loseFocus"
                 @change="change"
-                :action-style="{ width: '100rpx', color: '#007aff' }"
+                :action-style="activeBtnStyle"
                 @custom="custom"
                 @search="search"
                 :shape="'square'"
@@ -36,7 +51,6 @@
             </u-col>
           </u-row>
         </view>
-      </view>
       <u-row
         v-if="onFocus"
         class="word-selection"
@@ -66,7 +80,7 @@
                 @click="cancelCollected(item)"
                 :name="!item.collected ? 'star' : 'star-fill'"
                 size="40"
-                :color="!item.collected ? '#909399' : '#FF9900'"
+                :color="!item.collected ? '#909399' : '#90caf9'"
               ></u-icon>
               <!-- <u-icon v-if="item.collected" @click="cancelCollected(item)" name="star-fill" size="40" color="#FF9900"></u-icon> -->
               <!-- <image style="justify-items: flex-end;" mode="aspectFill" :src="item.images" /> -->
@@ -122,16 +136,16 @@ export default {
       // this.onFocus = true;
     },
     clear() {
-      this.animation.height(300).step();
+      this.animation.height(200).step();
       // 导出动画数据传递给data层
       this.animationData = this.animation.export();
       this.onFocus = false;
     },
     loseFocus: function () {
-      // this.animation.height(300).step()
-      // // 导出动画数据传递给data层
-      // this.animationData = this.animation.export()
-      // this.onFocus = false;
+      this.animation.height(200).step()
+      // 导出动画数据传递给data层
+      this.animationData = this.animation.export()
+      this.onFocus = false;
     },
     close: function () {},
     open: function (item) {
@@ -163,21 +177,16 @@ export default {
         url: "/pages/search/image/image",
       });
     },
-  },
-  onNavigationBarButtonTap(e) {
-    if (e.index === 1) {
-      this.$u.route({
-        url: "/pages/search/image/image",
-      });
-    } else {
-      this.$u.route({
-        url: "/pages/search/voice/voice",
-      });
-    }
-    // uni.showToast({
-    // 	title: e.index === 0 ? "你点了分享按钮" : "你点了收藏按钮",
-    // 	icon: "none"
-    // })
+		searchImage() {
+			this.$u.route({
+			  url: "/pages/search/image/image",
+			});
+		},
+		searchVoice() {
+			this.$u.route({
+			  url: "/pages/search/voice/voice",
+			});
+		}
   },
   data: () => {
     return {
@@ -273,18 +282,21 @@ export default {
         // 		collected: false
         // 	},
       ],
+			activeBtnStyle:{ 
+				width: '3.25rem', 
+				color: '#ffffff',
+				background:'#90caf9',
+				height:'30px',
+				lineHeight:'30px',
+				borderRadius:'0.5rem',
+				boxShadow:'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,rgba(0, 0, 0, 0.06) 0px 2px 4px -1px'
+				},
       animationData: {},
       options: [
-        // {
-        // 	text: 'Todo',
-        // 	style: {
-        // 		backgroundColor: '#007aff'
-        // 	}
-        // },
         {
           text: "Glosssary",
           style: {
-            backgroundColor: "#FF9900",
+            backgroundColor: "#90caf9",
           },
         },
       ],
@@ -293,17 +305,45 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .search-page-header {
-  /* display: none; */
-  height: 300px;
-  text-align: center;
+  height: 200px;
+	margin: 1rem;
+	background-color: white;
+	.logo{
+		display: flex;
+		justify-content: center;
+	}
+	.title{
+		text-align: left;
+		display: block;
+		margin: 1rem;
+	}
+	.search {
+		.btn{
+			background-color: #c8e6c9;
+			font-size: 1rem;
+			color: white;
+			box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+			  rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+			border-radius: 0.8rem;
+		}
+		.uni-button:after {
+        border: none;
+      }
+	}
 }
 
 .main-body {
   height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1rem;
 }
-
+.u-demo-area {
+	margin-top: 0.625rem;
+}
 uni-page-body {
   height: 100%;
 }
@@ -345,6 +385,11 @@ uni-page-body {
   display: flex;
   flex-direction: column;
   height: 100%;
+	width: 100%;
+	background-color: white;
+	border-radius: 1rem;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+	  rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 
 image {
@@ -355,4 +400,3 @@ image {
   border-radius: 12rpx;
 }
 </style>
--->

@@ -19,25 +19,6 @@
 				"navigationBarBackgroundColor":"#c7e5c8",
 				"navigationBarTextStyle":"black",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/icons/topbar-icon.ttf",
-							"text": "\ue687",
-							"width": "40px",
-							"fontSize": "28px",
-							"color": "#000000",
-							"background": "rgba(0,0,0,0)"
-						},
-						{
-							"fontSrc": "/static/icons/topbar-icon.ttf",
-							"text": "\ue686",
-							"width": "40px",
-							"fontSize": "28px",
-							"color": "#000000",
-							"background": "rgba(0,0,0,0)"
-						}
-						]
-					}
 				}
 			}
 		},
@@ -128,16 +109,19 @@
 				{
 					"path":"image/image",
 					"style":{
-						"navigationBarTitleText": "Test"
+						"navigationBarTitleText": "Take Photo",
+						"navigationBarBackgroundColor":"#c7e5c8",
+						"enablePullDownRefresh": false
 					}
 				}
 				// gap-间隔槽
 			    ,{
-                    "path" : "voice/voice",
-                    "style" :                                                                                    
+						"path" : "voice/voice",
+						"style" :                                                                                 
 					{
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
+						"navigationBarTitleText": "Speak",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor":"#c7e5c8"
 					}
                 
                 }
