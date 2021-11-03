@@ -1,7 +1,10 @@
 <template>
 	<view class="glossary-page">
-		<!-- <u-navbar :is-back="false" title="Glossary" :background="styles.navBackground" class="nav-bar" title-color="#000000"/> -->
 		<view class="list">
+			<view class="no-data" v-if="glossaryList.length === 0">
+				<u-image mode="aspectFit" height="200px" src="../../static/icons/no-data.svg" bg-color="#ffffff"></u-image>
+				<text class="text">No word in this glossary, search for something to start!</text>
+			</view>
 			<transition-group name="delete">
 				<view class="item-card" v-for="(item, index) in glossaryList"
 				:key="item.id">
@@ -52,9 +55,12 @@
 	const axios = require("axios");
 	export default{
 		mounted() {
-			this.userId = this.$store.state.vuex_user.id;
+			// this.userId = this.$store.state.vuex_user.id;
+			this.userId = "aa"
 			getGlossary(this.userId).then((res) => {
-				this.glossaryList = Object.assign({},res);
+				if(res) {
+					this.glossaryList = Object.assign({},res);
+				}
 			});
 		},
 		data() {
@@ -180,6 +186,21 @@
 			overflow: scroll;
 			width: 100%;
 			height: calc(100% - 94px);
+			.no-data{
+				background-color: white;
+				display: flex;
+				flex-direction: column;
+				margin: 1rem;
+				padding-top: 1rem;
+				border-radius: 1rem;
+				box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+				.text {
+					font-size: 1rem;
+					font-weight: bold;
+					display: block;
+					margin: 1rem;
+				}
+			}
 			.item-card {
 				position: relative;
 				.item-content {
