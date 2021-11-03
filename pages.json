@@ -91,7 +91,17 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/flashcard/Summary",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "Summary",
+								"navigationBarBackgroundColor":"#c7e5c8",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 			"root": "pages/search",
 			"pages": [
