@@ -12,6 +12,17 @@ const getGlossary = async function (usrname) {
 		return null;
 	}
 }
+
+const addGlossary = async function (usrname,wordItem) {
+	const url = GLOSSARY_URL+"/"+usrname;
+	const res = await axios.post(getUrl(url),wordItem)
+	if (res.status === 200) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 export {
-	getGlossary
+	getGlossary,addGlossary
 }

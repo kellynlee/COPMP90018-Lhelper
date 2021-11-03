@@ -3,191 +3,180 @@ Use Merriam-Webster dictionary API and Google translate API
 to get the meaning of the words and display them in the search result page.
 -->
 <template>
-	
-	<div id="vue_det">
-		<input id="input" v-model="message" placeholder="Enter a word"/>
-		<button id="go" @click="translate()">GO</button>
-		<h1>{{message}}</h1>
-		<button id="audio" @click="audio()">{{kk}}</button>			
-		<h4>{{trans_word}}</h4>
-		<view v-for="(item, index) in detail" :key="index">
-			<p>{{item.pos}}</p>
-			<h4>{{item.meaning}}</h4>
-			<view v-for="(item, index) in item.eg" :key="index">
-				<p>{{item.exps}}</p>
-				<p>{{item.trans}}</p>
-			</view>			
-		</view>
-		
-	</div>
+  <view class="dictionary">
+		<dictionary :isAdd="isAdd" :word="word"></dictionary>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
-				message:"",
-				audio_name:"",
-				trans_word: "",
-				kk:"", 
-				detail: [
-					{pos:"adj.", meaning:"meaning", eg:[{exps:"exps" , trans:"trans"}]}
-				], 
-								
-				
-			}
-		},
-		methods:{
-			
-			// get audio from merriam-webster and play
-			audio(){
-				const iac = uni.createInnerAudioContext();
-				var sound_url = 'https://media.merriam-webster.com/audio/prons/en/us/mp3/'+this.audio_name.charAt(0)+'/'+this.audio_name+'.mp3'
-				alert(sound_url);
-				iac.src = sound_url;
-				iac.play(() =>{
-					console.log('play~');
-				});
-			},
-			
-			// find the word meaning in merriam-webster dictionary 
-			// then translate to the language as user demand 
-			// (only supply Chinese so far)
-			translate(){ 
-				
-				uni.request({
-					url:'https://www.dictionaryapi.com/api/v3/references/collegiate/json/'+this.message+'?key=866972fb-209a-4a87-9ab9-39b2863b6832',
-					
-					success:(res) => {
-						
-						// search in merriam-webster JSON file
-						function find_ex(obj, k){
-							
-							for(var key in obj){								
-								var val = obj[key];
-								if (key==k && Array.isArray(val)){
-									return val;		
-								}						
-								//if (typeof(val)===Object && !Array.isArray(val)){
-									//var a = find_ex(val, k);
-									//if (a != null) return a;
-								//}						
-								if (Array.isArray(val)) {
-									for (var i=0; i<val.length; i++){
-										var b = find_ex(val[i], k);
-										if (b != null) { 
-											return b;
-										}	
-									}
-								}								
-							}
-							return null;							
-						}
-						
-						
-						var poss = []
-						console.log(res.data);
-						this.kk = '/'+ res.data[0].hwi.prs[0]['mw'] +'/';
-						this.audio_name = res.data[0].hwi.prs[0].sound['audio'];
-						var len = Math.min(res.data.length, 3);
-						
-						
-						// for different part of speech
-						for(var i=0; i<len; i++){
-							
-							var pos1 = res.data[i]['fl'];			
-							var meaning1 = res.data[i].shortdef[0];									
-							var obj = res.data[i].def[0].sseq[0];
-							var dt = find_ex(obj, 'dt');	
-							var egs = [];
-							var transs =[];
-							var ex = "";
-							var trans_ex1 = "";
-							
-							// find examples and translate them
-							if (dt.length > 1){
-								if (dt[1].length >1){
-									var len_dt = dt[1][1].length;
-									for(var j=0; j<len_dt; j++){				
-										ex = dt[1][1][j]['t'];
-										ex = ex.replace(/\{wi\}/g,'');
-										ex = ex.replace(/\{\/wi\}/g,'');
-										ex = ex.replace(/\{it\}/g,'');
-										ex = ex.replace(/\{\/it\}/g,'');
-										alert('EX'+ex);
-										
-										
-										egs.push(ex);
-									}
-									
-									alert('EGS'+egs);
-									setTimeout(()=>{},100);
-									
-									uni.request({
-										url:"https://translation.googleapis.com/language/translate/v2?key=AIzaSyCB517fv6zesTMgtXx9mPjgeVccBuncSsE",
-										data:{
-											
-											q:egs,
-											source:"en",
-											target:"zh",
-									
-										},
-										method:"POST",
-										success:(res) => {
-											console.log(res.data);
-											var trans_len = res.data.data.translations.length;
-											for (var d=0; d<trans_len; d++){
-												transs.push(res.data.data.translations[d]['translatedText']);
-											}
-											
-											
-										},
-									});
-								}
-							}
-						
-							
-							var et = [];
-							// change format for display
-							for (var c=0; c<egs.length; c++){
-								alert(egs[c], transs[c]);
-								et.push({exps:egs[c], trans:transs[c]});
-							}
-							poss.push({pos:pos1, meaning:meaning1, eg:et});
-						}	
-						this.detail = poss;
-					}
-				});
-				
-				// get the meaning of the word from google API
-				uni.request({
-					url:"https://translation.googleapis.com/language/translate/v2?key=AIzaSyCB517fv6zesTMgtXx9mPjgeVccBuncSsE",
-					data:{
-						q:this.message,
-						source:"en",
-						target:"zh",
-				
-					},
-					method:"POST",
-					success:(res2) => {
-						console.log(res2.data);
-						var zh = res2.data.data.translations[0]['translatedText'];
-						alert(zh);
-						this.trans_word = zh;
-						
-					},
-				});
-				
-				
+import dictionary from "../../components/dictionary.vue"
+import {getGlossary} from "../glossary/glossary-service.js"
+const axios = require("axios");
+export default {
+  onLoad: function (option) {
+    //option为object类型，会序列化上个页面传递的参数
+    this.word = option.word;
+  },
+	mounted() {
+		this.userId = this.$store.state.vuex_user.id;
+		this.checkGlossary();
+	},
+	components:{
+		dictionary
+	},
+  data() {
+    return {
+      word: "",
+			userId:"",
+      definition: "",
+			meaning:"",
+			isAdd:true,
+      isLoad: false,
+      classLst:[
+				{
+					name:"noun",
+					short:"n."
+				},
+				{
+					name:"pronoun",
+					short:"pron."
+				},
+				{
+					name:"adjective",
+					short:"adj."
+				},
+				{
+					name:"adverb",
+					short:"adv."
+				},
+				{
+					name:"verb",
+					short:"v."
+				},
+				{
+					name:"numeral",
+					short:"num."
+				},
+				{
+					name:"article",
+					short:"art."
+				},
+				{
+					name:"preposition",
+					short:"prep."
+				},
+				{
+					name:"conjunction",
+					short:"conj."
+				},
+				{
+					name:"interjection",
+					short:"interj."
+				}
+				]
+    };
+  },
+  methods: {
+    // get audio from merriam-webster and play
+		async checkGlossary() {
+			const glossary = await getGlossary(this.userId);
+			if (glossary && glossary.length > 0) {
+				if(!glossary.find(elem => elem.word === this.word)) {
+					this.isAdd = false
+					console.log("need add")
+				}
 			}
 		}
-		
-		
-	};
-   
+  },
+};
 </script>
 
-<style>
+<style lang="scss" scoped>
+.dictionary {
+	.dictionary-content {
+		margin: 1rem;
+		background-color: white;
+		padding: 0.8rem;
+		border-radius: 10px;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+		  rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+		.word_name{
+			font-weight: bolder;
+			font-size: 2rem;
+		}
+		.origin {
+			font-style: italic;
+			margin-bottom: 1rem;
+			font-family: serif;
+			font-size: 0.825rem;
+			color: #909399;
+		}
+		.voice {
+			display: flex;
+			flex-direction: row;
+			margin-top: 5px;
+			.item {
+				margin-right: 0.5rem;
+				.voice-btn {
+					max-width: 10rem;
+					font-size: 0.8rem;
+					background-color: #fbfffc;
+					box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+					border-radius: 10px;
+				}
+				.uni-button:after {
+        border: none;
+				}
+			}
+		}
+		.definition {
+			.single-item {
+				display: flex;
+				padding: 1rem 0.8rem;
+				.short{
+					font-style: italic;
+					margin-right: 1rem;
+					font-family: serif;
+					font-size: 1rem;
+					color: #909399;
+				}
+				.meaning{
+					display: flex;
+					flex-direction: column;
+				}
+			}
+		}
+	}
+	.btn-area {
+		position: fixed;
+		bottom: 10px;
+		margin: 0 auto;
+		left: 0;
+		right: 0;
+		max-width: 15.6rem;
+		.glossary-btn {
+			background-color: #c8e6c9;
+			color: white;
+		}
+		.uni-button:after {
+		  border: none;
+		}
+	}
+  .no-data {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    padding-top: 1rem;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+      rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    .text {
+      font-size: 1rem;
+      font-weight: bold;
+      display: block;
+      margin: 1rem;
+    }
+  }
+}
 </style>
-</html>

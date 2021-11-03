@@ -63,14 +63,12 @@
             v-for="(item, index) in list1"
             :key="item.id"
             :show="item.show"
-            @click="click"
             :btn-width="151"
             @close="close"
             :options="options"
             :disabled="item.show"
-            @content-click="contentClick"
           >
-            <view class="item u-border-bottom">
+            <view class="item u-border-bottom" @click="goDictionary(item)">
               <!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
               <view class="title-wrap word-item">
                 <text class="title u-line-2">{{ item.title }}</text>
@@ -142,10 +140,10 @@ export default {
       this.onFocus = false;
     },
     loseFocus: function () {
-      this.animation.height(200).step()
-      // 导出动画数据传递给data层
-      this.animationData = this.animation.export()
-      this.onFocus = false;
+      // this.animation.height(200).step()
+      // // 导出动画数据传递给data层
+      // this.animationData = this.animation.export()
+      // this.onFocus = false;
     },
     close: function () {},
     open: function (item) {
@@ -185,6 +183,11 @@ export default {
 		searchVoice() {
 			this.$u.route({
 			  url: "/pages/search/voice/voice",
+			});
+		},
+		goDictionary(item) {
+			uni.navigateTo({
+			    url: '/pages/search/search-translate?word='+item.title
 			});
 		}
   },

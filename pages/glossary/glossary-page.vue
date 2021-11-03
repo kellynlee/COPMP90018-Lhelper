@@ -88,6 +88,7 @@ const axios = require("axios");
 export default {
   mounted() {
     this.userId = this.$store.state.vuex_user.id;
+		// this.userId = "aaa"
     getGlossary(this.userId).then((res) => {
       if (res) {
         this.glossaryList = Object.assign({}, res);
