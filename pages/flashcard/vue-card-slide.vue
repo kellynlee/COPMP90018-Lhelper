@@ -1,7 +1,7 @@
 `<template>
 	<div class="wrap">
 		<!-- <div class="bg" :style="backgroundDiv" id='bg'> -->
-		<div class="bg" id='bg'>
+		<div class="bg" id='bg' >
 			<v-touch v-if="flashWords.length>num" v-on:swipeleft="onSwipeLeft" v-on:swiperight="onSwipeRight">
 				<div class="content">
 					<transition :name="direction">
@@ -85,8 +85,6 @@
 				// },
 				showFeedBackFlag: 0,
 				flashWords:[],
-				img: [require('../assets/1.jpg'), require('../assets/2.jpg'), require('../assets/3.jpg'), require('../assets/3.jpg')],
-
 			}
 		},
 		computed: {
@@ -100,11 +98,19 @@
 		},
 		created(){
 			this.flashWords = this.wordList;
+			console.log(this.flashWords)
 		},
 		mounted() {
-			this.word1 = this.flashWords[0];
-			this.word2 = this.flashWords[1];
-			this.word3 = this.flashWords[2];
+			if(this.flashWords.length>=1){
+				this.word1 = this.flashWords[0];
+			}
+			
+			if(this.flashWords.length>=2){
+				this.word2 = this.flashWords[1];
+			}
+			if(this.flashWords.length>=3){
+				this.word3 = this.flashWords[2];
+			}
 			touch('box');
 			touch('box2');
 			touch('box3');
@@ -173,11 +179,6 @@
 				this.$emit('OnReloadForget')
 			},
 			success(numb) {
-				if(numb){
-					this.$emit('OnRemember', this.flashWords[this.num])
-				}else{
-					this.$emit('OnForget', this.flashWords[this.num])
-				}
 				if (this.flag == 'off') {
 					return;
 				}
@@ -194,6 +195,11 @@
 				if(this.flashWords.length-this.num!==0){
 					this.flag = 'off'
 				}
+				if(numb){
+					this.$emit('OnRemember', this.flashWords[this.num])
+				}else{
+					this.$emit('OnForget', this.flashWords[this.num])
+				}
 				this.num += 1;
 				// 第一个动效
 				if (this.num % 3 == 1) {
@@ -201,6 +207,10 @@
 					if(this.num!==1){
 						this.word3 = this.flashWords[this.num+1]
 					}
+					if(this.num+1>=this.flashWords.length){
+						this.word3 = this.flashWords[0]
+					}
+					// this.word3 = this.flashWords[this.num+1]
 					// if(this.flashWords.length-this.num===2){
 					// 	this.show3 = false
 					// }
