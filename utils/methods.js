@@ -23,28 +23,51 @@ const getArray = function(obj){
  * Create daily flashcard
  */
 import {FLASHCARD_URL} from "./paths.js"
-const axios = require("axios");
 const createFlashCard = async function(username,date,wordList) {
-	 const url = getUrl(FLASHCARD_URL+"/"+username+"/"+date)
+	 let url = getUrl(FLASHCARD_URL+"/"+username+"/"+date)
 	 // const url = getUrl(FLASHCARD_URL+"/"+date);
-	 const data = {
+	 let data = {
 		 "created_date":date,
 		 "word_count":wordList.length,
 		 "word_list":wordList
 	 }
-	 const res = await axios.post(url,data)
+	 let option = {
+	 	url:url,
+		method:"POST",
+		data:data
+	 }
+	 let res = await request(option)
 	 return res;
  }
  const checkUpdate = async function(username,date) {
  	let url = FLASHCARD_URL+"/"+username+"/"+date
- 	let res = await axios.get(getUrl(url))
+	let option = {
+		url:url
+	}
+ 	let res = await request(option)
  	if (res.status === 200 && res.data) {
  		return true;
  	} else {
  		return false;
  	}
  }
-
+ 
+ const request = (options) =>{
+    	return new Promise((resolve,reject)=>{
+    		uni.request({
+    			url: getUrl(options.url),
+    			method: options.method || 'GET',
+					header: { 'content-type': 'application/json' },
+    			data: options.data || {},
+    			success: (res)=>{
+    				resolve(res)
+    			},
+    			fail: (err)=>{
+    				reject(err);
+    			}
+    		})
+    	})
+    }
 export {
-	getUrl, getArray, createFlashCard, checkUpdate
+	getUrl, getArray, createFlashCard, checkUpdate, request
 }
