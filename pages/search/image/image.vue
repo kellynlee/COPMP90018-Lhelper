@@ -11,7 +11,7 @@
 			<view class="selection-area" v-if="textLst.length>0">
 				<text>Please select the word to see the dictionary</text>
 				<view v-for="(item,index) in textLst" :key="index" class="select-item">
-					<u-button class="button uni-button" @click="goDictionary(item)" >{{item}}</u-button>
+					<button class="button uni-button" @click="goDictionary(item)" >{{item}}</button>
 				</view>
 			</view>
 		</transition>
