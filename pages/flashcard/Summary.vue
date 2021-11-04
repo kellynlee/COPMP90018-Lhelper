@@ -1,6 +1,6 @@
 <template>
   <view class="summary-page">
-    <!-- 		<view class="summary-chart">
+    		<view class="summary-chart">
 			<u-circle-progress 
 			active-color="#c7e5c8" 
 			:percent="this.percentage" 
@@ -25,7 +25,7 @@
 		</u-row>
 		<view class="btn" @click="jumpBack">
 			<button class="confirm-btn uni-button">OK</button>
-		</view> -->
+		</view>
   </view>
 </template>
 
@@ -34,6 +34,7 @@ import { UpdateTodo } from "../todolist/db.js";
 import { getUrl } from "../../utils/methods.js";
 import { TODO_URL } from "../../utils/paths.js";
 import dateFormat from "dateformat";
+import {request} from "../../utils/methods.js"
 const axios = require("axios");
 export default {
   data() {
@@ -53,7 +54,8 @@ export default {
         flag: true,
       },
     ];
-    this.summaryList = Object.assign([], this.$store.state.flash_words);
+		this.summaryList = Object.assign([],dummyData)
+    // this.summaryList = Object.assign([], this.$store.state.flash_words);
     this.$u.vuex("flash_words", []);
     this.user = this.$store.state.vuex_user.id;
     this.getCorrect();
@@ -72,14 +74,22 @@ export default {
       let now = new Date().getTime();
       let today = dateFormat(now, "yyyy-mm-dd");
       try {
-        let url = getUrl(TODO_URL + "/" + this.user + "/" + today);
-        let res = await axios.get(url);
-        if (res.status == 200 && res.data) {
+        let url = TODO_URL + "/" + this.user + "/" + today;
+				let option = {
+					url:url
+				}
+        let res = await request(option);
+        if (res.statusCode == 200 && res.data) {
           let todo = res.data;
           let index = todo.findIndex((elem) => elem.type == "flashcard");
           if (index != -1) {
             todo[index].done = true;
-            let update = await axios.put(url, todo);
+						let op = {
+							url:url,
+							data:todo,
+							method:"PUT"
+						}
+            let update = await request(op)
           }
         }
       } catch (e) {
