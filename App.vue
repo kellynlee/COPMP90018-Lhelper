@@ -19,6 +19,9 @@
 			}
 		},
 		methods:{
+			/**
+			 * Create daily reviewing flashcard, using Forgetting curve 
+			 */
 			async createFlashcard(user) {
 				const times = [1,2,5,8,15,30,60]
 				const now = new Date().getTime();
@@ -44,7 +47,19 @@
 								word_list.push({
 									id:glossary[i].id,
 									word: glossary[i].word,
-									phonetic_symbol:""
+									phonetic_symbol:glossary[i].phonetic_symbol
+								})
+							}
+						}
+						//In case there is no flashcard, we randomly generate some to review
+						if (count == 0) {
+							glossary.sort(() => Math.random() - 0.5);
+							for (let i = 0; i < glossary.length/2; i++) {
+								count++;
+								word_list.push({
+									id:glossary[i].id,
+									word: glossary[i].word,
+									phonetic_symbol:glossary[i].phonetic_symbol
 								})
 							}
 						}
