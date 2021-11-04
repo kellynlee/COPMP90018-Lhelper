@@ -1,12 +1,12 @@
-COMP90018_2021_SM2 Assignments 2 
-Group: T01/15-5
-Authors: Zhengyue Gao, Beier Li, Jing Li, Dongcheng Ding, Zanning Liu, Yu-Hsien Huang
+COMP90018_2021_SM2 Assignments 2.  
+Group: T01/15-5. 
+Authors: Zhengyue Gao, Beier Li, Jing Li, Dongcheng Ding, Zanning Liu, Yu-Hsien Huang. 
 
 <img src=https://github.com/rexding97/l-helper/blob/main/static/icons/logo.png width="100" height="100">
 
 # L-Helper
 
-This is an andriod app to help on learning languages. 
+This is an andriod app to help on learning languages.     
 The app not only recognises words in the images and translates them but also set a study plan for the users and them to review the words based on the forgetting curve theory.
 
 ## Main structure:
@@ -33,7 +33,7 @@ The app not only recognises words in the images and translates them but also set
 ## Main feature:
 
 #### Search:
-L-Helper supports 3 kinds of input 
+L-Helper supports 3 kinds of input.  
   * text input
   * image input
   * voice input
