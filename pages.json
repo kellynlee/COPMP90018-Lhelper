@@ -169,26 +169,26 @@
 		"list": [
 			{
 				"pagePath": "pages/search/search-page",
-				"iconPath": "static/icons/icon-magnifying_glass.svg",
-				"selectedIconPath": "static/icons/icon-magnifying_glass-s.svg",
+				"iconPath": "static/icons/icon-magnifying_glass.png",
+				"selectedIconPath": "static/icons/icon-magnifying_glass-s.png",
 				"text": "Search"
 			}
 			,{
 				"pagePath": "pages/glossary/glossary-page",
-				"iconPath": "static/icons/icon-book.svg",
-				"selectedIconPath": "static/icons/icon-book-s.svg",
+				"iconPath": "static/icons/icon-book.png",
+				"selectedIconPath": "static/icons/icon-book-s.png",
 				"text": "Glossary"
 			}
 			,{
 				"pagePath": "pages/flashcard/flashcard-page",
-				"iconPath": "static/icons/icon-paper.svg",
-				"selectedIconPath": "static/icons/icon-paper-s.svg",
+				"iconPath": "static/icons/icon-paper.png",
+				"selectedIconPath": "static/icons/icon-paper-s.png",
 				"text": "Flash Card"
 			}
 			,{
 				"pagePath": "pages/todolist/todolist-page",
-				"iconPath": "static/icons/icon-note.svg",
-				"selectedIconPath": "static/icons/icon-note-s.svg",
+				"iconPath": "static/icons/icon-note.png",
+				"selectedIconPath": "static/icons/icon-note-s.png",
 				"text": "Todo List"
 			}
 		]
