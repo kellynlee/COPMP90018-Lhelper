@@ -52,7 +52,7 @@
 				model: {
 					name: '',
 					password: '',
-					id:''
+					id: ''
 				},
 				show: false,
 				userList: [],
@@ -85,19 +85,6 @@
 							trigger: ['change', 'blur'],
 						}
 					],
-					rePassword: [{
-							required: true,
-							message: 'Please input password again',
-							trigger: ['change', 'blur'],
-						},
-						{
-							validator: (rule, value, callback) => {
-								return value === this.model.password;
-							},
-							message: 'Not same with password',
-							trigger: ['change', 'blur'],
-						}
-					],
 				},
 				content: `
 					1. 修复badge组件的size参数无效问题<br>
@@ -115,26 +102,41 @@
 				this.model.name = "test@email.com"
 				this.model.password = 'test123'
 			},
-			async login() {
-				this.$refs.uForm.validate()
+			login() {
+				console.log("test login")
 				this.$refs.uForm.validate(async valid => {
+					console.log(USER_URL)
 					if (valid) {
-						await axios.get(getUrl(USER_URL)).then((res) => {
-							let obj = res.data
-							this.userList = getArray(obj)
-							
-							console.log(this.$store)
-						})
-						for (let user of this.userList) {
-							if (user.name === this.model.name && user.password === this.model.password) {
-								console.log("Login Success")
-								this.$u.vuex('vuex_user', user)
-								uni.reLaunch({
-									url:'/'
-								})
+
+						uni.request({
+							url: getUrl(USER_URL), //仅为示例，并非真实接口地址。
+							method: "GET",
+							timeout: 10000,
+							success: (res) => {
+								console.log(res)
+								let obj = res.data
+								this.userList = getArray(obj)
+
+								console.log(obj)
+								for (let user of this.userList) {
+									console.log(user)
+									if (user.name === this.model.name && user.password === this
+										.model.password) {
+										console.log("Login Success")
+										this.$u.vuex('vuex_user', user)
+										uni.reLaunch({
+											url: '/'
+										})
+									}
+								}
+							},
+							fail: (res) => {
+								console.log(res)
 							}
-						}
+						});
 						console.log('验证通过');
+
+
 					} else {
 						console.log('验证失败');
 					}
