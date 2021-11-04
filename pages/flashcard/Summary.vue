@@ -18,10 +18,10 @@
 				{{item.word}}
 			</u-col>
 			<u-col class="" span="1" >
-				<u-icon :name="item.flag? 'checkmark':'close'" color="#aabb97"></u-icon>
+				<u-icon :name="item.remember? 'checkmark':'close'" color="#aabb97"></u-icon>
 			</u-col>
 		</u-row>
-		<view class="btn">
+		<view class="btn" @click="jumpBack">
 			<button class="confirm-btn uni-button">OK</button>
 		</view>
 		
@@ -44,57 +44,26 @@
                 "phonetic_symbol": "",
                 "word": "waive",
 								"flag":true
-            },
-            {
-                "id": "-MnUzba4ZWuu8RvKvdkZ",
-                "phonetic_symbol": "",
-                "word": "abbreviated",
-								"flag":true
-            },
-            {
-                "id": "-MnUzcvu2RtU_7LztrRa",
-                "phonetic_symbol": "",
-                "word": "aberuncator",
-								"flag":true
-            },
-            {
-                "id": "-MnUzg-sIgKKz4Mwp88V",
-                "phonetic_symbol": "",
-                "word": "osiered",
-								"flag":false
-            },
-            {
-                "id": "-MnUzhPfw4QQnpFg_qH7",
-                "phonetic_symbol": "",
-                "word": "osmiamate",
-								"flag":false
-            },
-            {
-                "id": "-MnUziwJBzjOdDD4g4LR",
-                "phonetic_symbol": "",
-                "word": "osspringer",
-								"flag":false
-            },
-            {
-                "id": "-MnUzktOLq2vKD6mX6W4",
-                "phonetic_symbol": "",
-                "word": "submissly",
-								"flag":false
             }
         ]
-				this.summaryList = Object.assign([],dummyData)
+				this.summaryList = Object.assign([],this.$store.state.flash_words)
+				this.$u.vuex('flash_words', [])
 				this.getCorrect()
 		},
 		methods: {
 			getCorrect() {
 				let correct = 0
 				this.summaryList.forEach(elem => {
-					if (elem.flag) {
+					if (elem.remember) {
 						correct++
 					}
 				});
 				this.percentage = Math.round((correct / this.summaryList.length)*100)
+			},
+			jumpBack(){
+				uni.navigateBack()
 			}
+			
 		}
 	}
 </script>

@@ -10,8 +10,8 @@
 							<view class='item'>
 								<view class="card-body">
 									<h1>{{word1.word}}</h1>
-									<p>test</p>
-									<h6 class="word-desc">asdbashjdbjahbdjhsabdhjsabjhdbsajbdhjasbhj</h6>
+									<p>{{word1.phonetic_symbol}}</p>
+									<!-- <h6 class="word-desc">asdbashjdbjahbdjhsabdhjsabjhdbsajbdhjasbhj</h6> -->
 								</view>
 							</view>
 						</div>
@@ -22,8 +22,8 @@
 							<view class='item'>
 								<view class="card-body">
 									<h1>{{word2.word}}</h1>
-									<p>test</p>
-									<h6 class="word-desc">asdbashjdbjahbdjhsabdhjsabjhdbsajbdhjasbhj</h6>
+									<p>{{word2.phonetic_symbol}}</p>
+									<!-- <h6 class="word-desc">asdbashjdbjahbdjhsabdhjsabjhdbsajbdhjasbhj</h6> -->
 								</view>
 							</view>
 						</div>
@@ -34,8 +34,8 @@
 							<view class='item'>
 								<view class="card-body">
 									<h1>{{word3.word}}</h1>
-									<p>test</p>
-									<h6 class="word-desc">asdbashjdbjahbdjhsabdhjsabjhdbsajbdhjasbhj</h6>
+									<p>{{word3.phonetic_symbol}}</p>
+									<!-- <h6 class="word-desc">asdbashjdbjahbdjhsabdhjsabjhdbsajbdhjasbhj</h6> -->
 								</view>
 							</view>
 						</div>
@@ -47,7 +47,18 @@
         </div> -->
 			</v-touch>
 			<view v-else>
-				<u-button @click="loadForgetWord"> Do Again</u-button>
+				<view class="no-data">
+				  <u-image
+				    mode="aspectFit"
+				    height="200px"
+				    src="../../static/icons/no-task.svg"
+				    bg-color="#ffffff"
+				  ></u-image>
+				  <text class="text"
+				    >Congrats! You have finished the task today</text
+				  >
+				</view> 
+				<u-button @click="loadForgetWord"> Check Summary</u-button>
 			</view>
 		</div>
 	</div>
@@ -196,9 +207,9 @@
 					this.flag = 'off'
 				}
 				if(numb){
-					this.$emit('OnRemember', this.flashWords[this.num])
+					this.$emit('OnRemember', this.flashWords[this.num],this.num)
 				}else{
-					this.$emit('OnForget', this.flashWords[this.num])
+					this.$emit('OnForget', this.flashWords[this.num],this.num)
 				}
 				this.num += 1;
 				// 第一个动效
@@ -282,7 +293,7 @@
 							//     this.$refs.contentItem.style.top=`${cc}rem`;
 							//   },i);
 							// }
-							console.log(this.flashWords.length,this.num)
+							// console.log(this.flashWords.length,this.num)
 								//追加第三个
 								this.$refs.contentItem2.style.top = '0.38rem';
 								this.$refs.contentItem2.style.left = '0rem';
@@ -327,7 +338,7 @@
 							//     this.$refs.contentItem.style.top=`${cc}rem`;
 							//   },i);
 							// }
-							console.log(this.flashWords.length,this.num)
+							// console.log(this.flashWords.length,this.num)
 								//追加第三个
 								this.$refs.contentItem3.style.top = '0.38rem';
 								this.$refs.contentItem3.style.left = '0rem';

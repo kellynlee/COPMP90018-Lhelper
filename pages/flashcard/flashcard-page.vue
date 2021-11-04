@@ -1,28 +1,40 @@
 <template>
-	<view class="page-body scroll-disable" v-show="ShowCard">
-		<view class="page-body body-flex scroll-disable" :animation="animationData">
+	<view class="page-body scroll-disable">
+		<view class="page-body body-flex scroll-disable" v-show="ShowCard" :animation="animationData">
 			<view>
 				<view class="words-number"><h2>{{count}}/{{wordList.length}}</h2> </view>
 				<view class="flashcard-wrap">
-					<view class="side-arrow"><p><</p></view>
+					<view class="side-arrow" v-show="!noTask"><p><</p></view>
 					<cardSlide v-if="Show&&wordList.length!==0" ref="flashcard" :wordList='wordList' @OnReloadForget="reloadForget" @OnRemember='rememberEvent' @OnForget='forgetEvent' @error='errEvent'></cardSlide>
-					<view class="side-arrow"><p>></p></view>
+					<view class="side-arrow" v-show="!noTask"><p>></p></view>
 				</view>
-				<view class="button-group">
+				<view class="button-group"  v-show="!noTask">
 					<u-button plain @click="forget" type="error" class="button-style">forget</u-button>
 					<u-button plain @click="remember" type="success"  class="button-style">remember</u-button>
 				</view>
 			</view>
-			<view class="footer" @click="scrollDown"><p>scrollDown</p></view>
+			<view  v-show="!noTask&&ShowCard" class="footer" @click="scrollDown"><p>scrollDown</p></view>
 		</view>
-		<view  class="page-body scroll-enable" :animation="animationData">
+		<view  v-show="ShowCard" class="page-body scroll-enable" :animation="animationData">
 			<p @click="scrollUp">scrollUp</p>
-			
+			<dictionary ref="dictionary" v-if="word!==''" :isAdd="true" :word="word" ></dictionary>
 		</view>
+		<view  v-show="!ShowCard" ><view class="no-data">
+        <u-image
+          mode="aspectFit"
+          height="200px"
+          src="../../static/icons/no-data.svg"
+          bg-color="#ffffff"
+        ></u-image>
+        <text class="text"
+          >Congrats! You don't have words to review today</text
+        >
+      </view> </view>
 	</view>
 </template>
 
 <script>
+	import dictionary from "../../components/dictionary.vue"
 	import cardSlide from './vue-card-slide.vue'
 	import {
 		FLASHCARD_URL
@@ -33,9 +45,10 @@
 	} from "../../utils/methods.js"
 	const axios = require("axios");
 	export default {
-		components:{cardSlide},
+		components:{cardSlide,dictionary},
 		data(){
 			return {
+				word:'',
 				ShowCard:true,
 				animationData:{},
 				count:0,
@@ -49,7 +62,8 @@
 			this.animationData = {}
 			// 页面关闭后清空数据
 		},
-		onload() {
+		onload(option) {
+			console.log(option)
 			this.animation = uni.createAnimation()
 			console.log("test")
 			// 创建动画实例
@@ -63,16 +77,26 @@
 		
 		},
 		created(){
-			axios.get(getUrl(FLASHCARD_URL)).then((res) => {
-				let obj = res.data[this.$store.state.vuex_user.id]['2021-11-03']
-				console.log(obj[Object.keys(obj)[0]])
-				this.wordList = getArray(obj[Object.keys(obj)[0]].word_list)
-				console.log(this.wordList)
-				this.count = this.wordList.length;
-			})
+			let date = this.$store.state.flashcard_date;
+			this.$u.vuex('flashcard_date', '')
+			console.log(date)
+			if(this.wordList.length==0&&date!==''){
+				axios.get(getUrl(FLASHCARD_URL)).then((res) => {
+					let obj = res.data[this.$store.state.vuex_user.id][date]
+					console.log(obj[Object.keys(obj)[0]])
+					this.wordList = getArray(obj[Object.keys(obj)[0]].word_list)
+					console.log(this.wordList)
+					this.count = this.wordList.length;
+					this.word = this.wordList[0].word;
+				})				
+			}else{
+				this.ShowCard = false;
+			}
 		},
 		computed:{
-			
+			noTask(){
+				return this.count===0
+			}
 		},
 		methods:{
 			scrollDown:function(){
@@ -93,9 +117,18 @@
 			remember:function(){
 				this.$refs.flashcard.error();
 			},
-			rememberEvent:function(word){
-				// console.log(word)
-				
+			checkFinish(index){
+				console.log(index,this.wordList.length)
+				if(index>=this.wordList.length){
+					this.noTask = false;
+				}
+			},
+			rememberEvent:function(word, index){
+				// this.word = ''
+				if(index<this.wordList.length-1){
+					this.word = this.wordList[index+1].word
+				}
+				// this.$refs.dictionary.translate()
 				for(let w of this.wordList){
 					if(word.word=== w.word && !w.remember){
 						console.log(w)
@@ -104,15 +137,23 @@
 						
 					}
 				}
+				// this.checkFinish(index)
 			},
-			forgetEvent:function(word){
+			forgetEvent:function(word, index){
+				// this.word = ''
+				if(index<this.wordList.length-1){
+					this.word = this.wordList[index+1].word
+				}
+				// this.$refs.dictionary.translate()
 				for(let w of this.wordList){
 					if(word.word=== w.word){
 						w['remember'] = false
+						this.count--;
 					}
 				}
 				this.forgetWords.push(word)
 				console.log(word)
+				// this.checkFinish(index)
 			},
 			async reloadForget(){
 				this.$u.vuex('flash_words', this.wordList)
@@ -183,4 +224,22 @@ uni-page-body {
 	flex-direction: column;
 	justify-content: space-between;
 }
+.no-data {
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      margin: 1rem;
+      padding-top: 1rem;
+      border-radius: 1rem;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+        rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+      .text {
+        font-size: 1rem;
+        font-weight: bold;
+        display: block;
+        margin: 1rem;
+		margin-left: 20px;
+		
+      }
+    }
 </style>

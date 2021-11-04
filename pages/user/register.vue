@@ -141,7 +141,9 @@
 							password: this.model.password
 						}).then((res) => {
 							let obj = res.data
-							uni.navigateBack();
+							uni.reLaunch({
+								url:'/page/user/login'
+							})
 							console.log(this.$store)
 						})
 						console.log('验证通过');

@@ -138,6 +138,11 @@ export default {
 				]
     };
   },
+  watch:{
+		word: function(newVal,oldVal){
+			this.translate()
+		}
+  },
   methods: {
     // get audio from merriam-webster and play
     audio(item) {

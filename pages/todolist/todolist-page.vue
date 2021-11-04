@@ -114,8 +114,9 @@
 			},
 			//
 			gotoFlashCardButton() {
-				var path = "/pages/flashcard/flashcard-page"
-				uni.switchTab({
+				var path = "/pages/flashcard/flashcard-page?date="+this.today
+				this.$u.vuex('flashcard_date', this.today)
+				uni.reLaunch({
 				    url: path,
 					props: { date: this.today }
 				});

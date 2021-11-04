@@ -129,7 +129,9 @@
 							if (user.name === this.model.name && user.password === this.model.password) {
 								console.log("Login Success")
 								this.$u.vuex('vuex_user', user)
-								uni.navigateBack();
+								uni.reLaunch({
+									url:'/'
+								})
 							}
 						}
 						console.log('验证通过');
