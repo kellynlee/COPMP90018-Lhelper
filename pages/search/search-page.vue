@@ -38,7 +38,7 @@
 			<u-row v-if="onFocus" class="word-selection" style="align-items: flex-start">
 				<u-col :span="10" :offset="1" stop>
 					<u-swipe-action @open="open(item)" :index="index" v-for="(item, index) in list1" 
-						:show="item.show" @click="click" :btn-width="151" @close="close" :options="options"
+						:show="item.show" :btn-width="151" @close="close" :options="options"
 						:disabled="item.show" @content-click="contentClick(item)">
 						<view class="item u-border-bottom">
 							<!-- 此层wrap在此为必写的，否则可能会出现标题定位错误 -->
@@ -46,7 +46,7 @@
 								<text class="title u-line-2">{{ item.title }}</text>
 								<text class="word-decs">{{ item.desc }}</text>
 							</view>
-							<u-icon @click="cancelCollected(item)" :name="!item.collected ? 'star' : 'star-fill'"
+							<u-icon @click.native.stop="cancelCollected(item)" :name="!item.collected ? 'star' : 'star-fill'"
 								size="40" :color="!item.collected ? '#909399' : '#90caf9'"></u-icon>
 							<!-- <u-icon v-if="item.collected" @click="cancelCollected(item)" name="star-fill" size="40" color="#FF9900"></u-icon> -->
 							<!-- <image style="justify-items: flex-end;" mode="aspectFill" :src="item.images" /> -->
@@ -67,9 +67,9 @@
 		getArray
 	} from "../../utils/methods.js";
 	import {
-		getGlossary
+		getGlossary, addGlossary, deleteGlossary
 	} from "../glossary/glossary-service.js";
-	const axios = require("axios");
+	import {request} from '../../utils/methods.js'
 	import dictionary from './dictionary.json'
 	export default {
 
@@ -106,7 +106,7 @@
 				this.$u.route("/pages/user/login");
 			},
 			cancelCollected: async function(item) {
-				event.stopPropagation()
+				// event.stopPropagation()
 				item.collected = false
 				// item.collected = true;
 				item.show = false;
@@ -117,16 +117,9 @@
 					}
 				}
 				console.log(cancelWord)
-				if(cancelWord.id!==undefined){					
-					const url = GLOSSARY_URL+"/"+this.$store.state.vuex_user.id+'/'+cancelWord.id;
-					console.log(item)
-					const res = await axios.delete(getUrl(url))
-					if (res.status === 200 && res.data) {
-						const glossaryList = getArray(res.data);
-						return glossaryList;
-					} else {
-						return null;
-					}
+				if(cancelWord.id!==undefined){	
+					deleteGlossary(this.userId,cancelWord.id)
+					
 				}
 				this.glossaryList = await getGlossary(this.userId)
 			},
@@ -178,13 +171,7 @@
 				let myDate = new Date();
 				console.log(item)
 				let word = {added_time:myDate.getDate()+"/"+myDate.getMonth()+"/"+myDate.getFullYear(),forget:0,hit:0,star:true,word:item.title}
-				const res = await axios.post(getUrl(url),word)
-				if (res.status === 200 && res.data) {
-					const glossaryList = getArray(res.data);
-					return glossaryList;
-				} else {
-					return null;
-				}
+				await addGlossary(this.userId, word)
 				this.glossaryList = await getGlossary(this.userId)
 
 			},
