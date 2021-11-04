@@ -13,40 +13,22 @@ The app not only recognises words in the images and translates them but also set
 
 ```
 .
-├── build                   # Compiled files (alternatively `dist`)
-├── docs                    # Documentation files (alternatively `doc`)
-├── src                     # Source files (alternatively `lib` or `app`)
-├── test                    # Automated tests (alternatively `spec` or `tests`)
-├── tools                   # Tools and utilities
-├── LICENSE
-└── README.md
-```
-
 ── l-helper 
-
-   ├── components
-   
-   ├── static
-   
-   ├── utils
-   
-   ├── pages
-   
-   │   ├── flashcard
-   
-   │   ├── glossary
-   
-   │   ├── todolist
-   
-   │   └── search
-   
-   ├── main.js
-   
-   ├── App.vue
-   
+   ├── components   
+   ├── static   
+   ├── utils   
+   ├── pages   
+   │   ├── flashcard   
+   │   ├── glossary   
+   │   ├── todolist   
+   │   └── search   
+   │       ├── image
+   │       └── voice
+   ├── main.js   
+   ├── App.vue   
    └── README.md
    
-   
+```   
    
 ## Main feature:
 
