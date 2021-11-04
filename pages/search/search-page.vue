@@ -11,14 +11,11 @@
 					speaking and typing!
 				</view>
 				<u-row class="search">
-					<u-col span="6">
+					<u-col span="12">
 						<button class="btn uni-button" @click="searchImage">
-							<u-icon name="camera"></u-icon>
-						</button>
-					</u-col>
-					<u-col span="6">
-						<button class="btn uni-button" @click="searchVoice">
-							<u-icon name="mic"></u-icon>
+							<u-icon class="image-button" name="camera"></u-icon>
+							/
+							<u-icon class="voice-button" name="mic"></u-icon>
 						</button>
 					</u-col>
 				</u-row>
@@ -281,6 +278,12 @@
 </script>
 
 <style lang="scss" scoped>
+	.image-button{
+		margin-right: 20rpx;
+	}
+	.voice-button{
+		margin-left: 20rpx;
+	}
 	.search-page-header {
 		height: 400px;
 		margin: 1rem;
