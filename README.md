@@ -1,7 +1,5 @@
 COMP90018_2021_SM2 Assignments 2 
-
 Group: T01/15-5
-
 Authors: Zhengyue Gao, Beier Li, Jing Li, Dongcheng Ding, Zanning Liu, Yu-Hsien Huang
 
 <img src=https://github.com/rexding97/l-helper/blob/main/static/icons/logo.png width="100" height="100">
