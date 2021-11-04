@@ -31,7 +31,7 @@ The app not only recognises words in images or voices and shows the meaning but 
    
 ```   
    
-## Main feature:
+## Main features:
 
 #### Search:
 L-Helper supports 3 kinds of input.  
