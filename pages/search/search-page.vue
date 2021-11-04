@@ -28,7 +28,8 @@
 				<u-row>
 					<u-col :span="10" :offset="1" stop>
 						<u-search v-model="value" @focus="getFocus" @blur="loseFocus" @change="change"
-							:action-style="activeBtnStyle" @custom="custom" @search="search" :shape="'square'"
+						@search="change"
+							:action-style="activeBtnStyle" :shape="'square'"
 							:clearabled="true" :show-action="true" action-text="Search"
 							placeholder="please input the words" @clear="clear"></u-search>
 					</u-col>
@@ -96,7 +97,9 @@
 		},
 		async mounted() {
 			this.userId = this.$store.state.vuex_user.id;
-			this.glossaryList = await getGlossary(this.userId)
+			if(this.userId!==undefined){
+				this.glossaryList = await getGlossary(this.userId)
+			}
 		},
 		methods: {
 			login() {
