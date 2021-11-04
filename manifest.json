@@ -1,6 +1,6 @@
 {
     "name" : "L-Helper",
-    "appid" : "__UNI__03B1C11",
+    "appid" : "__UNI__1050D81",
     "description" : "多平台快速开发的UI框架",
     "versionName" : "1.8.4",
     "versionCode" : "100",
@@ -24,7 +24,9 @@
         "usingComponents" : true,
         "nvueCompiler" : "uni-app",
         "compilerVersion" : 3,
-        "modules" : {},
+        "modules" : {
+            "Speech" : {}
+        },
         "distribute" : {
             "android" : {
                 "permissions" : [
@@ -55,7 +57,14 @@
             },
             "ios" : {},
             "sdkConfigs" : {
-                "ad" : {}
+                "ad" : {},
+                "speech" : {
+                    "baidu" : {
+                        "appid" : "25098304",
+                        "apikey" : "8x5aZ31zKtl8DF4XGK5tjidF",
+                        "secretkey" : "w4sFxWO4ls7S0npAgwENTkeR1hG8eEbr"
+                    }
+                }
             },
             "icons" : {
                 "android" : {
