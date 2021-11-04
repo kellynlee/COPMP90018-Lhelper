@@ -44,10 +44,7 @@
                 </button>
               </u-col>
               <u-col span="4">
-                <button 
-								class="button uni-button"
-								@click="onReview(item)"
-								>
+                <button class="button uni-button" @click="onReview(item)">
                   <u-icon
                     name="pencil"
                     custom-prefix="custom-icon"
@@ -80,40 +77,43 @@
         >
       </view>
     </view>
-		<u-skeleton :loading="!isLoad" :animation="true" bgColor="#FFF"></u-skeleton>
+    <u-skeleton
+      :loading="!isLoad"
+      :animation="true"
+      bgColor="#FFF"
+    ></u-skeleton>
   </view>
 </template>
 
 <script>
 import { GLOSSARY_URL } from "../../utils/paths.js";
-import { getUrl, getArray } from "../../utils/methods.js";
-import { getGlossary } from "./glossary-service.js";
-const axios = require("axios");
+import { getUrl, getArray, request } from "../../utils/methods.js";
+import { getGlossary,deleteGlossary } from "./glossary-service.js";
 export default {
   mounted() {
     this.userId = this.$store.state.vuex_user.id;
-		// this.userId = "aaa"
-		this.isLoad = false;
+    // this.userId = "aaa"
+    this.isLoad = false;
     getGlossary(this.userId).then((res) => {
       if (res) {
         this.glossaryList = Object.assign([], res);
       } else {
         this.glossaryList = null;
       }
-			this.isLoad = true;
+      this.isLoad = true;
     });
   },
-	onTabItemTap() {
-		console.log("click")
-		getGlossary(this.userId).then((res) => {
-		  if (res) {
-		    this.glossaryList = Object.assign([], res);
-		  } else {
-		    this.glossaryList = null;
-		  }
-			this.isLoad = true;
-		});
-	},
+  onTabItemTap() {
+    console.log("click");
+    getGlossary(this.userId).then((res) => {
+      if (res) {
+        this.glossaryList = Object.assign([], res);
+      } else {
+        this.glossaryList = null;
+      }
+      this.isLoad = true;
+    });
+  },
   data() {
     return {
       userId: "",
@@ -127,7 +127,7 @@ export default {
       selectedIndex: [],
       delBtnWidth: 60,
       startX: "",
-			isLoad:true,
+      isLoad: true,
     };
   },
   methods: {
@@ -138,32 +138,38 @@ export default {
       let changeFiled = {
         star: undefined,
       };
-			let audio =  "../../static/sounds/notification_simple-02.wav"
-      let patchUrl = getUrl(GLOSSARY_URL +"/"+this.userId + "/" + item.id);
+      let audio = "../../static/sounds/notification_simple-02.wav";
+      let patchUrl = GLOSSARY_URL + "/" + this.userId + "/" + item.id;
       if (item.star) {
         changeFiled.star = false;
       } else {
         changeFiled.star = true;
       }
-      axios.patch(patchUrl, changeFiled).then((res) => {
-        if (res.status == 200) {
-          this.$set(this.glossaryList[index], "star", res.data.star);
-					this.audio(audio)
-        };
+			let option = {
+			  url: patchUrl,
+				data:changeFiled,
+				method:"PUT"
+			};
+			request(option).then((res) => {
+				if (res.statusCode == 200) {
+				  this.$set(this.glossaryList[index], "star", res.data.star);
+					this.$forceUpdate()
+				  this.audio(audio);
+				}
+			})
+    },
+    audio(src) {
+      const iac = uni.createInnerAudioContext();
+      iac.src = src;
+      iac.play(() => {
+        console.log("play~");
       });
     },
-		audio(src) {
-		  const iac = uni.createInnerAudioContext();
-		  iac.src = src;
-		  iac.play(() => {
-		    console.log("play~");
-		  });
-		},
-		onReview(item) {
-			uni.navigateTo({
-			    url: '/pages/search/search-translate?isReview=true&word='+item.word
-			});
-		},
+    onReview(item) {
+      uni.navigateTo({
+        url: "/pages/search/search-translate?isReview=true&word=" + item.word,
+      });
+    },
 
     itemSelectedClass(index) {
       // if(this.isLongPressed) {
@@ -173,14 +179,14 @@ export default {
       // }
     },
     onDelete(item, index) {
-      let deleteIndex = GLOSSARY_URL +"/"+this.userId + "/" + item.id;
-			let audio = "../../static/sounds/navigation_transition-left.wav"
-      axios.delete(getUrl(deleteIndex)).then((res) => {
-        if (res.status === 200) {
-          this.glossaryList.splice(index, 1);
+      let deleteIndex = GLOSSARY_URL + "/" + this.userId + "/" + item.id;
+      let audio = "../../static/sounds/navigation_transition-left.wav";
+			deleteGlossary(this.userId,item.id).then ((res) => {
+				if (res) {
+					this.glossaryList.splice(index, 1);
 					this.audio(audio);
-        }
-      });
+				}
+			})
     },
 
     drawStart(e) {
@@ -303,7 +309,7 @@ export default {
         border-radius: 2rem;
         background: #fafffb;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-				font-size: 0.875rem;
+        font-size: 0.875rem;
       }
       .uni-button:after {
         border: none;
