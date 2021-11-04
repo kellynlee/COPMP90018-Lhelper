@@ -49,9 +49,6 @@ Review the words looked up before.
 #### TodoList:
 Connecting with the user's mobile phone Calendar and set up review plan here.
 
-## Installation
-
-
 
 ## Usage
 
