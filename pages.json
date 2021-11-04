@@ -98,19 +98,11 @@
 				{
 					"path": "search-page",
 					"style": {
-						"navigationBarTitleText": "Test",
+						"navigationBarTitleText": "",
 						// "navigationStyle": "custom" ,// 隐藏系统导航栏
 						// "navigationBarTextStyle": "white" // 状态栏字体为白色
 						"app-plus": {
-							"titleNView": {
-								"buttons": [{
-										"type": "share"
-									},
-									{
-										"type": "favorite"
-									}
-								]
-							}
+							
 						}
 					}
 				},

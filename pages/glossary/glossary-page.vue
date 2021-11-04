@@ -1,71 +1,53 @@
 <template>
   <view class="glossary-page">
     <view class="list u-skeleton">
-      <transition-group name="delete">
-        <view
-          class="item-card"
-          v-for="(item, index) in glossaryList"
-          :key="item.id"
-        >
+      <view v-if="glossaryList != null && glossaryList.length > 0">
+        <transition-group name="delete">
           <view
-            class="item-content"
-            :id="index"
-            @touchstart="drawStart"
-            @touchmove="drawMove"
-            @touchend="drawEnd"
-            :style="'right:' + item.right + 'px'"
+            class="item-card"
+            v-for="(item, index) in glossaryList"
+            :key="item.id"
           >
-            <u-row>
-              <u-col span="11"
-                ><p class="item-title">{{ item.word }}</p></u-col
-              >
-              <u-col span="1">
-                <u-icon
-                  v-if="item.star"
-                  name="heart-fill"
-                  color="#f06292"
-                ></u-icon>
-              </u-col>
-            </u-row>
-            <p>{{ "ADD TIME:" + item.added_time }}</p>
-            <p>{{ "HITS:" + getHits(item) }}</p>
-            <u-row gutter="2" class="collapse-card" justify="space-around">
-              <u-col span="4">
+            <view
+              class="item-content"
+              :id="index"
+              @touchstart="drawStart"
+              @touchmove="drawMove"
+              @touchend="drawEnd"
+              :style="'right:' + item.right + 'px'"
+            >
+              <div class="row">
+                <p class="item-title" :style="item.star ? 'color:#f06292' : ''">
+                  {{ item.word }}
+                </p>
+              </div>
+              <p>{{ "ADD TIME:" + item.added_time }}</p>
+              <p>{{ "HITS:" }}</p>
+              <view class="btn-area">
                 <button
                   class="button uni-button"
                   @click="onClickStar(item, index)"
                 >
-                  <u-icon
-                    name="heart"
-                    custom-prefix="custom-icon"
-                    class="icon-btn"
-                  ></u-icon>
                   {{ item.star ? "Unstar" : "Star" }}
                 </button>
-              </u-col>
-              <u-col span="4">
                 <button class="button uni-button" @click="onReview(item)">
-                  <u-icon
-                    name="pencil"
-                    custom-prefix="custom-icon"
-                    class="icon-btn"
-                  ></u-icon
-                  >Review
+                  Review
                 </button>
-              </u-col>
-            </u-row>
+              </view>
+            </view>
+            <view class="delete-item">
+              <button
+                class="delete-btn uni-button"
+                @click="onDelete(item, index)"
+              >
+                Delete
+                <!-- <u-icon name="close"></u-icon> -->
+              </button>
+            </view>
           </view>
-          <view class="delete-item">
-            <button
-              class="delete-btn uni-button"
-              @click="onDelete(item, index)"
-            >
-              <u-icon name="close"></u-icon>
-            </button>
-          </view>
-        </view>
-      </transition-group>
-      <view class="no-data" v-if="glossaryList === null">
+        </transition-group>
+      </view>
+      <view class="no-data" v-if="glossaryList == null">
         <u-image
           mode="aspectFit"
           height="200px"
@@ -88,7 +70,8 @@
 <script>
 import { GLOSSARY_URL } from "../../utils/paths.js";
 import { getUrl, getArray, request } from "../../utils/methods.js";
-import { getGlossary,deleteGlossary } from "./glossary-service.js";
+import { getGlossary, deleteGlossary } from "./glossary-service.js";
+import uniIcon from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 export default {
   mounted() {
     this.userId = this.$store.state.vuex_user.id;
@@ -107,13 +90,16 @@ export default {
     console.log("click");
     getGlossary(this.userId).then((res) => {
       if (res) {
+        // console.log(res)
         this.glossaryList = Object.assign([], res);
+        this.$forceUpdate();
       } else {
         this.glossaryList = null;
       }
       this.isLoad = true;
     });
   },
+  components: { uniIcon },
   data() {
     return {
       userId: "",
@@ -125,7 +111,7 @@ export default {
       },
       isLongPressed: false,
       selectedIndex: [],
-      delBtnWidth: 60,
+      delBtnWidth: 90,
       startX: "",
       isLoad: true,
     };
@@ -145,18 +131,18 @@ export default {
       } else {
         changeFiled.star = true;
       }
-			let option = {
-			  url: patchUrl,
-				data:changeFiled,
-				method:"PUT"
-			};
-			request(option).then((res) => {
-				if (res.statusCode == 200) {
-				  this.$set(this.glossaryList[index], "star", res.data.star);
-					this.$forceUpdate()
-				  this.audio(audio);
-				}
-			})
+      let option = {
+        url: patchUrl,
+        data: changeFiled,
+        method: "PUT",
+      };
+      request(option).then((res) => {
+        if (res.statusCode == 200) {
+          this.$set(this.glossaryList[index], "star", res.data.star);
+          this.$forceUpdate();
+          this.audio(audio);
+        }
+      });
     },
     audio(src) {
       const iac = uni.createInnerAudioContext();
@@ -181,12 +167,12 @@ export default {
     onDelete(item, index) {
       let deleteIndex = GLOSSARY_URL + "/" + this.userId + "/" + item.id;
       let audio = "../../static/sounds/navigation_transition-left.wav";
-			deleteGlossary(this.userId,item.id).then ((res) => {
-				if (res) {
-					this.glossaryList.splice(index, 1);
-					this.audio(audio);
-				}
-			})
+      deleteGlossary(this.userId, item.id).then((res) => {
+        if (res) {
+          this.glossaryList.splice(index, 1);
+          this.audio(audio);
+        }
+      });
     },
 
     drawStart(e) {
@@ -247,7 +233,7 @@ export default {
   .list {
     overflow: scroll;
     width: 100%;
-    height: calc(100% - 94px);
+    height: 100vh;
     .no-data {
       background-color: white;
       display: flex;
@@ -275,24 +261,32 @@ export default {
         padding: 0.5rem 1rem;
         position: relative;
         z-index: 100;
+        .row {
+          display: flex;
+          justify-content: space-between;
+        }
         .item-title {
           line-height: 2.25rem;
           font-size: 1rem;
           font-weight: bold;
         }
-        .button {
-          background-color: #90caf9;
-          font-size: 0.5rem;
-          color: #ffffff;
-          // margin-bottom: 1rem;
-          margin-top: 0.8rem;
-          border-radius: 10px;
-          .icon-btn {
-            margin-right: 0.2rem;
+        .btn-area {
+          display: flex;
+          .button {
+            background-color: #90caf9;
+            font-size: 0.8rem;
+            color: #ffffff;
+            // margin-bottom: 1rem;
+            margin-top: 0.8rem;
+            border-radius: 10px;
+            width: 90px;
+            .icon-btn {
+              margin-right: 0.2rem;
+            }
           }
-        }
-        .uni-button:after {
-          border: none;
+          .uni-button:after {
+            border: none;
+          }
         }
       }
     }

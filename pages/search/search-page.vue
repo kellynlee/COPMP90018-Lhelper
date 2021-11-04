@@ -21,7 +21,7 @@
 				</u-row>
 				<!-- <u-button @click="login">Login</u-button> -->
 			</view>
-			<view class="u-demo-area">
+			<view class="u-demo-area ">
 				<u-row>
 					<u-col :span="10" :offset="1" stop>
 						<u-search v-model="value" @focus="getFocus" @blur="loseFocus" @change="change"
@@ -74,7 +74,7 @@
 			this.animationData = {}
 			// 页面关闭后清空数据
 		},
-		onload() {
+		onLoad() {
 			this.animation = uni.createAnimation()
 			console.log("test")
 			// 创建动画实例
@@ -320,11 +320,15 @@
 	}
 
 	.main-body {
-		height: 100%;
+		height: 90vh;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 1rem;
+		margin: 1rem;
+		background-color: white;
+		border-radius: 1rem;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+			rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 	}
 
 	.u-demo-area {
@@ -373,10 +377,6 @@
 		flex-direction: column;
 		height: 100%;
 		width: 100%;
-		background-color: white;
-		border-radius: 1rem;
-		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-			rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 	}
 
 	image {

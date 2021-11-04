@@ -167,7 +167,7 @@ export default {
     // then translate to the language as user demand
     // (only supply Chinese so far)
     async translate() {
-      const url = "api/api/v1/entries/en/" + this.$props.word;
+      const url = "https://api.dictionaryapi.dev/api/v1/entries/en/" + this.$props.word;
       try {
         let option = {
           url: url,
