@@ -134,22 +134,22 @@
                 
                 }
             ]
-		},
-		{
-			"root": "pages/todolist",
-			"pages": [
-				// test-测试
-				{
-					"path": "todolist-page",
-					"style": {
-						"navigationBarTitleText": "Test"
-						// "navigationStyle": "custom" ,// 隐藏系统导航栏
-						// "navigationBarTextStyle": "white" // 状态栏字体为白色
-					}
-				}
-				// gap-间隔槽
-			]
 		}
+		// ,{
+		// 	"root": "pages/todolist",
+		// 	"pages": [
+		// 		// test-测试
+		// 		{
+		// 			"path": "todolist-page",
+		// 			"style": {
+		// 				"navigationBarTitleText": "Test"
+		// 				// "navigationStyle": "custom" ,// 隐藏系统导航栏
+		// 				// "navigationBarTextStyle": "white" // 状态栏字体为白色
+		// 			}
+		// 		}
+		// 		// gap-间隔槽
+		// 	]
+		// }
 	],
 	"preloadRule": {
 		"pages/example/components": {
@@ -166,24 +166,26 @@
 		"selectedColor": "#303133",
 		"backgroundColor": "#FFFFFF",
 		"borderStyle": "black",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/search/search-page",
 				"iconPath": "static/icons/icon-magnifying_glass.svg",
 				"selectedIconPath": "static/icons/icon-magnifying_glass-s.svg",
 				"text": "Search"
-			}, {
+			}
+			,{
 				"pagePath": "pages/glossary/glossary-page",
 				"iconPath": "static/icons/icon-book.svg",
 				"selectedIconPath": "static/icons/icon-book-s.svg",
 				"text": "Glossary"
-			},
-			{
+			}
+			,{
 				"pagePath": "pages/flashcard/flashcard-page",
 				"iconPath": "static/icons/icon-paper.svg",
 				"selectedIconPath": "static/icons/icon-paper-s.svg",
 				"text": "Flash Card"
-			},
-			{
+			}
+			,{
 				"pagePath": "pages/todolist/todolist-page",
 				"iconPath": "static/icons/icon-note.svg",
 				"selectedIconPath": "static/icons/icon-note-s.svg",

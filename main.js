@@ -61,8 +61,8 @@ Vue.use(httpInterceptor, app);
 import httpApi from '@/common/http.api.js';
 Vue.use(httpApi, app);
 // ES6 import
-import VueTouch from 'vue-touch'
-Vue.use(VueTouch, {name: 'v-touch'})
+// import VueTouch from 'vue-touch'
+// Vue.use(VueTouch, {name: 'v-touch'})
 // import cardSlide from 'vue-card-slide'
 // // require import
 // // var cardSlide = require('CardSlide')

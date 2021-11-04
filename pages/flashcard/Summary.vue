@@ -1,6 +1,6 @@
 <template>
 	<view class="summary-page">
-		<view class="summary-chart">
+<!-- 		<view class="summary-chart">
 			<u-circle-progress 
 			active-color="#c7e5c8" 
 			:percent="this.percentage" 
@@ -23,49 +23,49 @@
 		</u-row>
 		<view class="btn" @click="jumpBack">
 			<button class="confirm-btn uni-button">OK</button>
-		</view>
+		</view> -->
 		
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				summaryList:[],
-				percentage:""
-			}
-		},
-		created() {
-			// this.summaryList = Object.assign([],this.$store.state)
-			const dummyData = [
-            {
-                "id": "-MnUzVdqoQMaljunwhAi",
-                "phonetic_symbol": "",
-                "word": "waive",
-								"flag":true
-            }
-        ]
-				this.summaryList = Object.assign([],this.$store.state.flash_words)
-				this.$u.vuex('flash_words', [])
-				this.getCorrect()
-		},
-		methods: {
-			getCorrect() {
-				let correct = 0
-				this.summaryList.forEach(elem => {
-					if (elem.remember) {
-						correct++
-					}
-				});
-				this.percentage = Math.round((correct / this.summaryList.length)*100)
-			},
-			jumpBack(){
-				uni.navigateBack()
-			}
+	// export default {
+	// 	data() {
+	// 		return {
+	// 			summaryList:[],
+	// 			percentage:""
+	// 		}
+	// 	},
+	// 	created() {
+	// 		// this.summaryList = Object.assign([],this.$store.state)
+	// 		const dummyData = [
+ //            {
+ //                "id": "-MnUzVdqoQMaljunwhAi",
+ //                "phonetic_symbol": "",
+ //                "word": "waive",
+	// 							"flag":true
+ //            }
+ //        ]
+	// 			this.summaryList = Object.assign([],this.$store.state.flash_words)
+	// 			this.$u.vuex('flash_words', [])
+	// 			this.getCorrect()
+	// 	},
+	// 	methods: {
+	// 		getCorrect() {
+	// 			let correct = 0
+	// 			this.summaryList.forEach(elem => {
+	// 				if (elem.remember) {
+	// 					correct++
+	// 				}
+	// 			});
+	// 			this.percentage = Math.round((correct / this.summaryList.length)*100)
+	// 		},
+	// 		jumpBack(){
+	// 			uni.navigateBack()
+	// 		}
 			
-		}
-	}
+	// 	}
+	// }
 </script>
 
 <style lang="scss" scoped>
