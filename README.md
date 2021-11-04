@@ -6,8 +6,9 @@ Authors: Zhengyue Gao, Beier Li, Jing Li, Dongcheng Ding, Zanning Liu, Yu-Hsien 
 
 # L-Helper
 
-This is an andriod app to help on learning languages.     
-The app not only recognises words in the images and translates them but also set a study plan for the users and them to review the words based on the forgetting curve theory.
+This is an app to help on learning languages (can be exported for use on both Android and IOS phones).     
+The app not only recognises words in images or voices and shows the meaning but also set a study plan for the users and help them to review the words based on the forgetting curve theory.  
+
 
 ## Main structure:
 
@@ -58,3 +59,7 @@ Connecting with the user's mobile phone Calendar and set up review plan here.
 2. add the words to your own Glossary.
 3. Ues the Flash Card feature to review.
 4. Change review plan in the to do list tab if needed.
+
+
+
+
