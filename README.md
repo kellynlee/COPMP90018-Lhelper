@@ -4,7 +4,9 @@ Group: T01/15-5
 
 Authors: Zhengyue Gao, Beier Li, Jing Li, Dongcheng Ding, Zanning Liu, Yu-Hsien Huang
 
-# L-helper
+![image](https://github.com/rexding97/l-helper/blob/main/static/icons/logo.png)
+
+# L-Helper
 
 This is an andriod app to help on learning languages. 
 The app not only recognises words in the images and translates them but also set a study plan for the users and them to review the words based on the forgetting curve theory.
