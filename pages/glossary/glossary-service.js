@@ -24,7 +24,7 @@ const addGlossary = async function (usrname,wordItem) {
 		data:wordItem
 	}
 	const res = await request(option)
-	if (res.status === 200) {
+	if (res.statusCode === 200) {
 		return true;
 	} else {
 		return false;
