@@ -18,7 +18,9 @@
 				{{item.word}}
 			</u-col>
 			<u-col class="" span="1" >
-				<u-icon :name="item.remember? 'checkmark':'close'" color="#aabb97"></u-icon>
+				<u-icon 
+				:name="item.remember? 'checkmark':'close'" 
+				:color="item.remember?'#aabb97':'#f06292'"></u-icon>
 			</u-col>
 		</u-row>
 		<view class="btn" @click="jumpBack">
@@ -29,11 +31,18 @@
 </template>
 
 <script>
+	import {UpdateTodo} from "../todolist/db.js"
+	import {getUrl} from"../../utils/methods.js"
+	import {TODO_URL} from "../../utils/paths.js"
+	import dateFormat from "dateformat";
+	const axios = require("axios");
 	export default {
 		data() {
 			return {
 				summaryList:[],
-				percentage:""
+				percentage:"",
+				user:"",
+				
 			}
 		},
 		created() {
@@ -47,7 +56,8 @@
             }
         ]
 				this.summaryList = Object.assign([],this.$store.state.flash_words)
-				this.$u.vuex('flash_words', [])
+				this.$u.vuex('flash_words', []);
+				this.user = this.$store.state.vuex_user.id;
 				this.getCorrect()
 		},
 		methods: {
@@ -60,7 +70,23 @@
 				});
 				this.percentage = Math.round((correct / this.summaryList.length)*100)
 			},
-			jumpBack(){
+			async jumpBack(){
+				let now = new Date().getTime();
+				let today = dateFormat(now, "yyyy-mm-dd");
+				try{
+					let url = getUrl(TODO_URL+"/"+this.user+'/'+today);
+					let res = await axios.get(url);
+					if (res.status == 200 && res.data){
+						let todo = res.data;
+						let index = todo.findIndex(elem => elem.type == "flashcard");
+						if(index != -1) {
+							todo[index].done = true;
+							let update = await axios.put(url,todo)
+						}
+					}
+				}catch(e){
+					//TODO handle the exception
+				}
 				uni.navigateBack()
 			}
 			

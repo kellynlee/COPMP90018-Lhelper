@@ -14,7 +14,7 @@
 					<view class="list-item" :class="item.done?'list-item-done':''" >
 						<u-checkbox @change="doneButton" v-model="item.done" :name="item.id"></u-checkbox>
 						<text class="list-item-text">{{ item.title }}</text>
-						<button v-show="item.isCard" @click="gotoFlashCardButton">GO</button>
+						<button v-show="item.isCard" class="flascard-btn uni-button" @click="gotoFlashCardButton">GO</button>
 					</view>
 			</u-swipe-action>
 		</view>
@@ -160,12 +160,14 @@
 			},
 			// delete the selected todo
 			delTodoButton(index, index1) {
+				let audio = "../../static/sounds/navigation_transition-left.wav"
 				if(index >= this.list.length) return
 				if(index1 == 0) {
 					// UI mock del
 					this.list.splice(index, 1);
 					
 					DeleteTodo(this.user, this.today, index, (res) => {
+						this.audio(audio)
 						this.updateList()
 						this.updateRedDot()
 					})
@@ -177,12 +179,22 @@
 					this.showEditField = true
 				}
 			},
+			//play sound
+			audio(src) {
+			  const iac = uni.createInnerAudioContext();
+			  iac.src = src;
+			  iac.play(() => {
+			    console.log("play~");
+			  });
+			},
 			// mark the todo to done
 			doneButton(e) {
+				let audio =  "../../static/sounds/notification_simple-02.wav"
 				if(e.name >= this.list.length) return
 				DoneTodo(this.user, this.today, e.name, e.value, (res) => {
 					this.updateList()
 					this.updateRedDot()
+					this.audio(audio)
 				})
 			},
 			// close the other list item when swap a new one 
@@ -267,6 +279,16 @@
 			flex-direction: row;
 			height: 2.5rem;
 			align-items: center;
+			.flascard-btn {
+				background-color: #c7e5c8;
+				box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+				border-radius: 2rem;
+				font-size: 0.875rem;
+				color: white;
+			}
+			.uni-button:after {
+			  border: none;
+			}
 		}
 		
 		.list-item-done {

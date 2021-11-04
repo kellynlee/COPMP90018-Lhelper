@@ -11,7 +11,7 @@ to get the meaning of the words and display them in the search result page.
 			<text class="origin">{{"Origin: "+definition.origin }}</text>
 			<view class="voice">
 				<view v-for="(item,index) in definition.phonetics" class="item" :key="index">
-					<button class="voice-btn uni-button" @click="audio(item)">
+					<button class="voice-btn uni-button" @click="audio(item.audio)">
 					  <u-icon name="volume-up"></u-icon>
 						{{"/ "+item.text+ " /"}}
 					</button>
@@ -145,10 +145,9 @@ export default {
   },
   methods: {
     // get audio from merriam-webster and play
-    audio(item) {
+    audio(src) {
       const iac = uni.createInnerAudioContext();
-      const sound_url = item.audio
-      iac.src = sound_url;
+      iac.src = src;
       iac.play(() => {
         console.log("play~");
       });
@@ -160,7 +159,7 @@ export default {
     async translate() {
       try {
         const url =
-          "https://api.dictionaryapi.dev/api/v1/entries/en_US/" + this.$props.word;
+          "https://api.dictionaryapi.dev/api/v1/entries/en/" + this.$props.word;
         const res = await axios.get(url);
         if (res.status === 200 && res.data.length > 0) {
           this.definition = Object.assign({}, res.data[0]);
