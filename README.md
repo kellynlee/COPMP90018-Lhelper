@@ -4,7 +4,7 @@ Group: T01/15-5
 
 Authors: Zhengyue Gao, Beier Li, Jing Li, Dongcheng Ding, Zanning Liu, Yu-Hsien Huang
 
-![image](https://github.com/rexding97/l-helper/blob/main/static/icons/logo.png)
+![image](https://github.com/rexding97/l-helper/blob/main/static/icons/logo.png =100x100)
 
 # L-Helper
 
