@@ -262,17 +262,9 @@
 					_this.searchText = _this.searchText + s;
 					console.log("result: "+_this.searchText);
 					_this.isLoad = true;
-					var wordLst = s.toLocaleLowerCase().split(/[\@\#\$\%\^\&\*\(\)\{\}\:\"\<\>\?\[\]\n\s123456789]/);
-					_this.textLst = [];
-					for (var i=0;i<wordLst.length;i++){
-						// var isletter = /^[a-zA-Z]+$/.test(wordLst[i]);
-						// console.log(wordLst[i]);
-						if (wordLst[i].length>1){
-							this.textLst.push(wordLst[i])
-						}
-						
-					};
-					_this.textLst = Array.from(new Set(this.textLst));
+					_this.textLst = _this.searchText.split(/[\@\#\$\%\^\&\*\(\)\{\}\:\"\<\>\?\[\]\n\s123456789]/);
+					console.log(_this.textLst);
+					
 				}, function(e){
 					console.log(e.message);
 				});

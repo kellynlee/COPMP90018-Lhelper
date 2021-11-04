@@ -117,7 +117,7 @@
 				{
 					"path":"image/image",
 					"style":{
-						"navigationBarTitleText": "Take Photo",
+						"navigationBarTitleText": "Recognition",
 						"navigationBarBackgroundColor":"#c7e5c8",
 						"enablePullDownRefresh": false
 					}
