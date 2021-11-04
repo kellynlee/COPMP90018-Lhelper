@@ -10,7 +10,7 @@ This is an andriod app to help on learning languages.
 The app not only recognises words in the images and translates them but also set a study plan for the users and them to review the words based on the forgetting curve theory.
 
 ## Main structure:
-
+$ tree
 .
 ├── build                   # Compiled files (alternatively `dist`)
 ├── docs                    # Documentation files (alternatively `doc`)
