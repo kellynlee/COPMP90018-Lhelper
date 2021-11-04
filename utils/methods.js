@@ -24,7 +24,7 @@ const getArray = function (obj) {
  */
 import { FLASHCARD_URL } from "./paths.js";
 const createFlashCard = async function (username, date, wordList) {
-  let url = getUrl(FLASHCARD_URL + "/" + username + "/" + date);
+  let url = FLASHCARD_URL + "/" + username + "/" + date;
   // const url = getUrl(FLASHCARD_URL+"/"+date);
   let data = {
     created_date: date,

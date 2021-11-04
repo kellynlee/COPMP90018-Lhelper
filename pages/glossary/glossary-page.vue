@@ -69,7 +69,7 @@
 
 <script>
 import { GLOSSARY_URL } from "../../utils/paths.js";
-import { getUrl, getArray, request } from "../../utils/methods.js";
+import { request } from "../../utils/methods.js";
 import { getGlossary, deleteGlossary } from "./glossary-service.js";
 import uniIcon from "../../uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 export default {
