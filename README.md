@@ -74,6 +74,12 @@ UniApp, Vue, Javascript, CSS
 
   * account: rexding@outlook.com
   * password: -Pbc3CYj!.#L5,8
+  
+* You Can Easily try on web view by click 运行(R) -> 运行到浏览器 -> Chrome, But some method we implemented does **not support** on the web view, if you want to try the fully supported application, you still need to package it into .apk file and run it through your android phone.
+
+  Here is the web view screenshoot:
+
+  <img src=".\readmeImage\image-20211105174207189.png" alt="image-20211105170104348" style="zoom:50%;" />
 
 ### 2. Cloud Packaging
 
