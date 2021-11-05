@@ -125,7 +125,7 @@
 										console.log("Login Success")
 										this.$u.vuex('vuex_user', user)
 										uni.reLaunch({
-											url: '/'
+											url: '/pages/search/search-page'
 										})
 									}
 								}

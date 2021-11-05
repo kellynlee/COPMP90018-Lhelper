@@ -77,6 +77,9 @@
 		onLoad() {
 			this.animation = uni.createAnimation()
 			console.log("test")
+			if (!this.$store.state.vuex_user.id) {
+				this.$u.route("/pages/user/login");
+			}
 			// 创建动画实例
 		},
 		onShow() {
@@ -87,9 +90,9 @@
 			})
 			console.log("test1")
 			console.log(this.$store.state.vuex_user)
-			if (!this.$store.state.vuex_user.id) {
-				this.$u.route("/pages/user/login");
-			}
+			// if (!this.$store.state.vuex_user.id) {
+				// this.$u.route("/pages/user/login");
+			// }
 			this.animation = animation
 		},
 		async mounted() {
