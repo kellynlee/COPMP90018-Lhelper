@@ -52,6 +52,9 @@ const checkUpdate = async function (username, date) {
   }
 };
 
+/**
+ * Encapsulate the function for request
+ */
 const request = (options, dic) => {
   return new Promise((resolve, reject) => {
     let url;

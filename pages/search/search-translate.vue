@@ -1,6 +1,6 @@
 <!--
-Use Merriam-Webster dictionary API and Google translate API 
-to get the meaning of the words and display them in the search result page.
+Use Wiktionary based API 
+to get the meaning of the words and display them in the reusable dictionary component.
 -->
 <template>
   <view class="dictionary">

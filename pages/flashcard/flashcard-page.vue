@@ -36,7 +36,7 @@
     <view class="page-body scroll-enable" :animation="animationData">
       <view @click="scrollUp" class="click-btn backToFlashcard">
         <u-icon name="arrow-up"></u-icon>
-        <h4>Check Detail</h4>
+        <h4>Back to Flashcard</h4>
       </view>
       <dictionary
         ref="dictionary"
@@ -222,10 +222,15 @@ uni-page-body {
     margin-right: 0.2rem;
   }
 }
+
 .uni-button:after {
   border: none;
 }
 .scroll-enable {
   overflow: scroll;
+}
+.backToFlashcard {
+  display: flex;
+  justify-content: center;
 }
 </style>

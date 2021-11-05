@@ -1,3 +1,6 @@
+<!-- 
+This is the search page, containing the 
+ -->
 <template>
 	<view class="main-body">
 		<!-- <button type="default" @click="test">image</button> -->

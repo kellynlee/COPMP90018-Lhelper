@@ -1,3 +1,6 @@
+<!-- 
+This is the login page
+ -->
 <template>
 	<view>
 		<u-row>

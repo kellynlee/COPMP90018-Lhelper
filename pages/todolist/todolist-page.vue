@@ -1,3 +1,6 @@
+<!-- 
+This is the todo-list page
+ -->
 <template>
 	<view class="todo-list-page">
 		<uni-calendar 

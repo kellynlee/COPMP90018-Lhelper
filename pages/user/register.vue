@@ -1,3 +1,6 @@
+<!--
+This is the Register Page
+-->
 <template>
 	<view>
 		<u-row>
