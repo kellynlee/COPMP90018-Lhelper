@@ -10,7 +10,7 @@ This is an app to help on learning languages (can be exported for use on both An
 The app not only recognises words in images or voices and shows the meaning but also set a study plan for the users and help them to review the words based on the forgetting curve theory.  
 
 
-## Main structure:
+## Main Structure:
 
 ```
 .
@@ -31,31 +31,28 @@ The app not only recognises words in images or voices and shows the meaning but 
    
 ```   
    
-## Main features:
+## Main Features:
 
-#### Search:
+### Search:
 L-Helper supports 3 kinds of input.  
   * text input
   * image input (use Google Optical Character Recognition API)
   * voice input (use Google Speech Recognition API)
 At the moment we support search in English-English dictionary, hope to add other languages in the future.
 
-#### Glossary:
+### Glossary:
 Record the words that the users have searched and want to remember.
 
-#### FlashCard:
+### FlashCard:
 Review the words looked up before.
 
-#### TodoList:
+### TodoList:
 Connecting with the user's mobile phone Calendar and set up review plan here.
 
 
 ## Built With
 
-UniApp
-Vue
-Javascript
-CSS
+UniApp, Vue, Javascript, CSS
 
 ## Getting Started
 
