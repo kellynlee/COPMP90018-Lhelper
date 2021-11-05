@@ -2,7 +2,7 @@ COMP90018_2021_SM2 Assignments 2.
 Group: T01/15-5.   
 Authors: Zhengyue Gao, Beier Li, Jing Li, Dongcheng Ding, Zanning Liu, Yu-Hsien Huang. 
 
-<img src=https://github.com/rexding97/l-helper/blob/main/static/icons/logo.png width="100" height="100">
+<img src=./blob/main/static/icons/logo.png width="100" height="100">
 
 # L-Helper
 
@@ -68,7 +68,7 @@ UniApp, Vue, Javascript, CSS
 
 * You should have the UI like this image
 
-  ![image-20211105165635217](.\readmeImage\image-20211105165635217.png)
+  <img src=".\readmeImage\image-20211105165635217.png" alt="image-20211105170104348" style="zoom:50%;" />
 
 * You might need to login https://dev.dcloud.net.cn/ through Hbuilder X, here we provide our testing account
 
