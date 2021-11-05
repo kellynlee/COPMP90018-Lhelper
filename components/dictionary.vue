@@ -1,5 +1,5 @@
 <!--
-Use Merriam-Webster dictionary API and Google translate API 
+Use Wikitionary dictionary API 
 to get the meaning of the words and display them in the search result page.
 -->
 <template>

@@ -1,3 +1,6 @@
+<!-- 
+This is Glossary page, containing viewing, deleting, star and check dictionary functions
+ -->
 <template>
   <view class="glossary-page">
     <view class="list u-skeleton">

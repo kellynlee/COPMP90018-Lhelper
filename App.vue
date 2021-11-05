@@ -4,10 +4,7 @@ import { AddNewTodo } from "./pages/todolist/db.js";
 import dateFormat from "dateformat";
 import { createFlashCard, checkUpdate } from "./utils/methods.js";
 export default {
-  // 此处globalData为了演示其作用，不是uView框架的一部分
-  globalData: {
-    username: "Test",
-  },
+
   onLaunch() {
     const user_id = this.$store.state.vuex_user.id;
     if (user_id) {

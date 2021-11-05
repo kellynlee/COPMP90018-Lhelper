@@ -1,3 +1,6 @@
+<!-- 
+This is the photo search page, we use camera to get picture and recognize words in the picture
+ -->
 <template>
 	<view class="photo-page">
 		<view class="photo-area">

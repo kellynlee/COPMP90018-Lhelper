@@ -1,3 +1,6 @@
+<!-- 
+This is the componet of flashcard
+ -->
 <template>
   <div class="tantan">
     <movable-area>
