@@ -125,12 +125,12 @@
 			},
 			getFocus: function() {
 				// this.onFocus = true;
-				this.animation.height(0).step()
-				// 导出动画数据传递给data层
-				this.animationData = this.animation.export()
-				setTimeout(() => {
-					this.onFocus = true;
-				}, 300)
+				// this.animation.height(100).step()
+				// // 导出动画数据传递给data层
+				// this.animationData = this.animation.export()
+				// setTimeout(() => {
+				// 	this.onFocus = true;
+				// }, 300)
 				// this.onFocus = true;
 			},
 			clear() {
@@ -177,6 +177,15 @@
 			},
 			apply(){},
 			change: async function() {
+				if(this.value!==''){
+					this.animation.height(100).step()
+					// 导出动画数据传递给data层
+					this.animationData = this.animation.export()
+					setTimeout(() => {
+						this.onFocus = true;
+					}, 300)
+				}
+				
 				let result = [];
 				for (let word in dictionary) {
 					// console.log(this.value)
