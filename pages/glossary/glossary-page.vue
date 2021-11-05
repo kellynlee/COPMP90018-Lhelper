@@ -121,9 +121,7 @@ export default {
       return item.hit + "/" + (item.hit + item.forget);
     },
     onClickStar(item, index) {
-      let changeFiled = {
-        star: undefined,
-      };
+      let changeFiled = Object.assign({},item);
       let audio = "../../static/sounds/notification_simple-02.wav";
       let patchUrl = GLOSSARY_URL + "/" + this.userId + "/" + item.id;
       if (item.star) {

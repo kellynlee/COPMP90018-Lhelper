@@ -60,9 +60,8 @@ export default {
         flag: true,
       },
     ];
-    this.summaryList = Object.assign([], dummyData);
-    // this.summaryList = Object.assign([], this.$store.state.flash_words);
-    this.$u.vuex("flash_words", []);
+    // this.summaryList = Object.assign([], dummyData);
+    this.summaryList = Object.assign([], this.$store.state.flash_words);
     this.user = this.$store.state.vuex_user.id;
     this.getCorrect();
   },
