@@ -13,21 +13,21 @@
 				<u-button type="success" class="inside-u-button" plain @click="remember">Remember</u-button>
 			</view>
 			<block v-for="(item, index) in goods" :key="item.id">
-				<movable-view :damping="20" :x="item.x" :y="item.y" inertia out-of-bounds direction="all"
+				<movable-view disabled :damping="20" :x="item.x" :y="item.y" inertia out-of-bounds direction="all"
 					@change="onMovableChange($event, index)">
 					<div class="item" :style="{
-              position: 'relative',
-              zIndex: index + 1,
-              transform: `
-                scale(${
-                  index == goods.length - 1
-                    ? 1
-                    : 1 - (goods.length - index) / 100
-                })
-                translateY(${-index * 10}px)`,
-              transition: 'all .3s',
-            }">
-			
+						  position: 'relative',
+						  zIndex: index + 1,
+						  transform: `
+							scale(${
+							  index == goods.length - 1
+								? 1
+								: 1 - (goods.length - index) / 100
+							})
+							translateY(${-index * 10}px)`,
+						  transition: 'all .3s',
+						}">
+
 						<!-- <u-image :src="item.cover" :width="400" :height="400"></u-image> -->
 						<view class="flashcard-item" width="100%" height="100%">
 							<h1>{{item.word}}</h1>
@@ -66,6 +66,7 @@
 				this.size = this.wordList.length
 				this.getGoodList(3);
 				this.word = this.goods[this.goods.length - 1].word
+				this.goods[this.goods.length - 1].moveable = false;
 			}
 		},
 		mounted() {
@@ -75,11 +76,11 @@
 			/**
 			 * 模拟获取数据
 			 */
+			moveHandle(){},
 			scrolldown() {
 				this.$emit('scrolldown')
 			},
 			getGoodList(pageSize = 1) {
-				console.log("获取新数据");
 				for (let index = 0; index < pageSize; index++) {
 					if (this.allWordList.length <= 0) {
 						return
@@ -91,7 +92,7 @@
 						...word,
 						x: 0,
 						y: 0,
-
+						moveable:true,
 						old: {
 							x: 0,
 							y: 0,
@@ -106,19 +107,23 @@
 			 * 移动回调
 			 */
 			onMovableChange(event, index) {
-				let item = this.goods[index];
-				let {
-					x,
-					y,
-					source
-				} = event.detail; // 赋值当前坐标
-				// console.log(x, y, source);
+					console.log(this.index,index,this.goods.length)
+					let item = this.goods[index];
+					let {
+						x,
+						y,
+						source
+					} = event.detail; // 赋值当前坐标
+					// console.log(x, y, source);
 
-				item.old.x = x;
-				item.old.y = y;
+					item.old.x = x;
+					item.old.y = y;
+					// 移动结束/手指离开屏幕
+					if (source == "friction") {
+						this.onMovableEnd(index)
+					}
+				
 
-				// 移动结束/手指离开屏幕
-				if (source == "friction") this.onMovableEnd(index);
 			},
 
 			/**
@@ -132,22 +137,25 @@
 				} = item.old; // 获取当前坐标
 
 				if (x >= 20) {
+					console.log("right")
 					// 超出右边界
 					this.removeItem(index, "like");
 				} else if (x <= -20) {
 					// 超出左边界
+					console.log(index)
 					this.removeItem(index, "unlike");
 				} else {
 					// 没有超出边界，回到中心点
 					this.resetItem(index);
 				}
+
 			},
 
 			/**
 			 * 移除卡片
 			 */
 			removeItem(index, mode = "like") {
-				this.index++;
+				console.log("获取新数据");
 				let item = this.goods[index];
 				item.x = item.old.x;
 				item.y = item.old.y;
@@ -166,7 +174,9 @@
 						}
 						this.word = this.goods[this.goods.length - 1].word
 						this.$emit('setword', this.word);
-					}, 200);
+						this.index++;
+						this.goods[this.goods.length - 1].moveable = false;
+					}, 301);
 				});
 			},
 			forget() {

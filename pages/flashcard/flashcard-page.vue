@@ -8,6 +8,7 @@
 							bg-color="#ffffff">
 						</u-image>
 						<text class="text">Congrats! You don't have words to review today</text>
+						<u-button @click="reloadForget"> Check Summary</u-button>
 					</view>
 				</view>
 				<cardslide @setword='setword' @setForget='forgetEvent' @setRemember='rememberEvent' @scrolldown='scrolldown' v-show="!isFinished" :wordList='wordList' @setFinished='setFinished'></cardslide>
@@ -93,7 +94,7 @@
 
 		data() {
 			return {
-				word:'test',
+				word:'',
 				animationData: {},
 				isFinished: false,
 				wordList: [],
@@ -136,6 +137,10 @@
 			setFinished(status) {
 				this.isFinished = status
 			},
+			async reloadForget() {
+				this.$u.vuex('flash_words', this.wordList)
+				this.$u.route("/pages/flashcard/Summary");
+			},
 			scrollUp() {
 				console.log(this.animation)
 				this.animation.translateY('0%').step()
@@ -156,7 +161,7 @@
 
 	uni-page-body {
 		width: 100vh;
-		height: 100vh;
+		height: 100%;
 	}
 
 	.page-body {
