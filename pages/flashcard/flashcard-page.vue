@@ -15,9 +15,9 @@
 			</view>
 		</view>
 		<view class="page-body scroll-enable" :animation="animationData">
-			<view @click="scrollUp" class="click-btn">
-				<u-icon name="arrow-up"></u-icon>
-				<text>Click to return</text>
+			<view @click="scrollUp" class="click-btn backToFlashcard">
+					<u-icon name="arrow-up"></u-icon>
+					<h4>Check Detail</h4>
 			</view>
 			<dictionary ref="dictionary" v-if="word!==''" :isAdd="true" :word="word"></dictionary>
 		</view>
@@ -173,5 +173,8 @@
 	
 	.scroll-enable {
 		overflow: scroll;
+	}
+	.backToFlashcard{
+		text-align: center;
 	}
 </style>

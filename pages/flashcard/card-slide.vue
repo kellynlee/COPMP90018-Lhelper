@@ -2,8 +2,9 @@
 	<div class="tantan">
 
 		<movable-area>
-			<view class="card-footer">
-				<u-button @click="scrolldown">Check Detail</u-button>
+			<view class="card-footer" @click="scrolldown">
+				<h4>Check Detail</h4>
+				<u-icon name="arrow-down"></u-icon>
 			</view>
 			<view style="text-align: center;">
 				<h3>{{size-index}}/{{size}}</h3>
