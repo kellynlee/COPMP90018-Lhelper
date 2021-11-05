@@ -1,3 +1,6 @@
+<!-- 
+This is the voice search page, in this page, we use the microphone to get voice and convert to word
+ -->
 <template>
 	<view>
 

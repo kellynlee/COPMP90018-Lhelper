@@ -1,3 +1,6 @@
+<!-- 
+This is the flashcard page, containing animation of swiching flashcard and check dictionary
+ -->
 <template>
   <view class="page-body scroll-disable">
     <view class="page-body scroll-disable">

@@ -1,3 +1,6 @@
+<!-- 
+This is the Summary page, provide a statistical view of the flashcard results
+ -->
 <template>
   <view class="summary-page">
     <view class="summary-chart">

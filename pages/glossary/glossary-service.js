@@ -1,6 +1,10 @@
+
+
 import {GLOSSARY_URL} from "../../utils/paths.js";
 import {getUrl, getArray,request} from "../../utils/methods.js"
-
+/**
+ * Get all glossary
+ */
 const getGlossary = async function (usrname) {
 	const url = GLOSSARY_URL+"/"+usrname;
 	let option = {
@@ -15,7 +19,9 @@ const getGlossary = async function (usrname) {
 		return null;
 	}
 }
-
+/**
+ * Add single word to glossary
+ */
 const addGlossary = async function (usrname,wordItem) {
 	let url = GLOSSARY_URL+"/"+usrname;
 	let option = {
@@ -30,6 +36,9 @@ const addGlossary = async function (usrname,wordItem) {
 		return false;
 	}
 }
+/**
+ * Delete a word from glossary
+ */
 
 const deleteGlossary = async function (usrname,itemId) {
 	const url = GLOSSARY_URL+"/"+usrname+"/"+itemId;
