@@ -91,6 +91,8 @@ UniApp, Vue, Javascript, CSS, Hbuilder X, Firebase, google image api, baidu voic
 
 * Hbuilder X would running some step to package it and then send the information to cloud. Wait for some minutes (depend on the requirements at the same time on cloud center). Once you finish, you would get a url link to download the .apk file of this project.
 
+  ![image-20211105192654573](.\readmeImage\image-20211105192654573.png)
+
 * Now you can install this .apk to your phone and using our L-helper application.
 
   
