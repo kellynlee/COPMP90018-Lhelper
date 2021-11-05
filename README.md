@@ -37,7 +37,7 @@ The app not only recognises words in images or voices and shows the meaning but 
 L-Helper supports 3 kinds of input.  
   * text input
   * image input (use Google Optical Character Recognition API)
-  * voice input (use Google Speech Recognition API)
+  * voice input (use Google Speech Recognition API)   
 At the moment we support search in English-English dictionary, hope to add other languages in the future.
 
 ### Glossary:
