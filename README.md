@@ -52,7 +52,7 @@ Connecting with the user's mobile phone Calendar and set up review plan here.
 
 ## Built With
 
-UniApp, Vue, Javascript, CSS
+UniApp, Vue, Javascript, CSS, Hbuilder X, Firebase, google image api, baidu voice recognition api
 
 ## Getting Started
 
